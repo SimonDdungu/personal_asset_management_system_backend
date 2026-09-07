@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: personal_asset_management_system
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
