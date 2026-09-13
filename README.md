@@ -43,5 +43,5 @@ The goal of the project is to provide a **structured and centralized way to unde
 
 ## License
 Copyright © 2026 Simon Ddungu. All rights reserved.  
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file  
+This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the [LICENSE.md](LICENSE.md) file  
 This Project is developed by [Simon Ddungu](https://simonddungu-portfolio.vercel.app/).
