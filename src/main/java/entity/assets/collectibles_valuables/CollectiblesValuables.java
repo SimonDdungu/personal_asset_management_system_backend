@@ -1,6 +1,5 @@
-package entity.assets.electronics;
+package entity.assets.collectibles_valuables;
 
-import entity.assets.Acquisition;
 import entity.assets.Assets;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,11 +11,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "electronics")
+@Table(name = "collectibles_valuables")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Electronics {
+public class CollectiblesValuables {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -25,29 +24,26 @@ public class Electronics {
     @JoinColumn(name = "asset_id", nullable = false)
     private Assets assets;
 
-    @Column(nullable = false)
-    private String brand;
-
     @Column
-    private String model;
+    private String creator;
 
     @Column(name = "serial_number")
     private String serialNumber;
 
     @Column
-    private Integer year;
+    private String material;
 
     @Column
-    private String color;
-
-    @Column(nullable = false, length = 3)
-    private String currency;
+    private Integer year;
 
     @Column(name = "current_value", nullable = false, precision = 19, scale = 2)
     private BigDecimal currentValue;
 
     @Column(name = "current_value_updated_at", nullable = false)
     private Instant currentValueUpdatedAt;
+
+    @Column(nullable = false, length = 3)
+    private String currency;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -63,8 +59,7 @@ public class Electronics {
     }
 
     @PreUpdate
-    protected  void onUpdate(){
+    protected void onUpdate(){
         updatedAt = Instant.now();
     }
-
 }

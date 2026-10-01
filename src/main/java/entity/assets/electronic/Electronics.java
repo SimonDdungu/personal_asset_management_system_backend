@@ -1,6 +1,5 @@
-package entity.assets.Furniture;
+package entity.assets.electronic;
 
-import entity.assets.Acquisition;
 import entity.assets.Assets;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,11 +11,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "furniture")
+@Table(name = "electronics")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Furniture {
+public class Electronics {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -25,23 +24,29 @@ public class Furniture {
     @JoinColumn(name = "asset_id", nullable = false)
     private Assets assets;
 
-    @Column
+    @Column(nullable = false)
     private String brand;
 
     @Column
-    private String material;
+    private String model;
+
+    @Column(name = "serial_number")
+    private String serialNumber;
 
     @Column
-    private String description;
+    private Integer year;
+
+    @Column
+    private String color;
+
+    @Column(nullable = false, length = 3)
+    private String currency;
 
     @Column(name = "current_value", nullable = false, precision = 19, scale = 2)
     private BigDecimal currentValue;
 
     @Column(name = "current_value_updated_at", nullable = false)
     private Instant currentValueUpdatedAt;
-
-    @Column(nullable = false, length = 3)
-    private String currency;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -57,7 +62,7 @@ public class Furniture {
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected  void onUpdate(){
         updatedAt = Instant.now();
     }
 
