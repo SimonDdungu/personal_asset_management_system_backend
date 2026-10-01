@@ -1,4 +1,4 @@
-package entity.assets.stock_asset;
+package entity.assets.savings;
 
 import entity.assets.Assets;
 import jakarta.persistence.*;
@@ -6,15 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "stock_assets")
+@Table(name = "savings")
 @Getter
 @Setter
 @NoArgsConstructor
-public class StockAsset {
+public class Savings {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -23,14 +25,26 @@ public class StockAsset {
     @JoinColumn(name = "asset_id", nullable = false)
     private Assets assets;
 
-    @Column(name = "ticker_symbol", nullable = false)
-    private String tickerSymbol;
-
-    @Column(name = "number_shares", nullable = false)
-    private int numberShares;
-
     @Column(nullable = false)
-    private String brokerage;
+    private String institution;
+
+    @Column(name = "account_number", nullable = false)
+    private String accountNumber;
+
+    @Column(nullable = false, length = 3)
+    private String currency;
+
+    @Column(name = "current_balance", nullable = false, precision = 19, scale = 2)
+    private BigDecimal currentBalance;
+
+    @Column(name = "current_balance_updated_at", nullable = false)
+    private Instant currentBalanceUpdatedAt;
+
+    @Column(name = "interest_rate", precision = 5, scale = 2)
+    private BigDecimal interestRate;
+
+    @Column(name = "maturity_date")
+    private LocalDate maturityDate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -46,7 +60,10 @@ public class StockAsset {
     }
 
     @PreUpdate
-    protected void onUpdate(){
+    protected  void onUpdate(){
         updatedAt = Instant.now();
     }
+
+
+
 }
