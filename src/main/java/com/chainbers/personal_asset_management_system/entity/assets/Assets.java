@@ -29,6 +29,13 @@ public class Assets {
     @JoinColumn(name = "asset_category_id", nullable = false)
     private AssetCategory assetCategory;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "acquisition_id", nullable = false)
+    private Acquisition acquisition;
+
+    @Column(nullable = false)
+    private String name;
+
     @Column
     private String description;
 
