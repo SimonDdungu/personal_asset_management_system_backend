@@ -1,4 +1,4 @@
-package com.chainbers.personal_asset_management_system.entity.asset_properties.cash_asset;
+package com.chainbers.personal_asset_management_system.entity.asset_properties.physical_cash;
 
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import jakarta.persistence.*;
@@ -13,11 +13,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cash_assets")
+@Table(name = "physical_cash")
 @Getter
 @Setter
 @NoArgsConstructor
-public class CashAsset {
+public class PhysicalCash {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -25,9 +25,6 @@ public class CashAsset {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "asset_id", nullable = false)
     private Assets assets;
-
-    @Column(name = "bank_account_number", nullable = false)
-    private int bankAccountNumber;
 
     @Column(name = "current_value", nullable = false, precision = 19, scale = 2)
     private BigDecimal currentValue;
