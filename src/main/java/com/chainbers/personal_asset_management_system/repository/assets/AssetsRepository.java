@@ -9,6 +9,7 @@ import java.util.UUID;
 public interface AssetsRepository extends JpaRepository<Assets, UUID> {
     List<Assets> findByNameContainingIgnoreCase(String name);
     List<Assets> findByUserId(UUID userId);
-    List<Assets> findByAssetCategoryNameIgnoreCase(String categoryName);
-    List<Assets> findByAcquisitionNameIgnoreCase(String acquisitionName);
+    List<Assets> findByAssetCategoryNameIgnoreCaseAndUserId(String assetCategoryName, UUID userId);
+    List<Assets> findByAssetCategoryAssetTypeNameIgnoreCaseAndUserId(String assetTypeName, UUID userId);
+    List<Assets> findByAcquisitionNameIgnoreCaseAndUserId(String acquisitionName, UUID userId);
 }
