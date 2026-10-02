@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AssetDocumentRepository extends JpaRepository<AssetDocument, UUID> {
-    List<AssetDocument> findByAssetId(UUID assetId);
+    List<AssetDocument> findByAssetsId(UUID assetId);
     List<AssetDocument> findByCaptionContainingIgnoreCase(String caption);
 }

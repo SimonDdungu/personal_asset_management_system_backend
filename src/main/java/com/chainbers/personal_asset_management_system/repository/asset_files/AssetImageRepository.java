@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AssetImageRepository extends JpaRepository<AssetImage, UUID> {
-    List<AssetImage> findByAssetId(UUID assetId);
+    List<AssetImage> findByAssetsId(UUID assetId);
 }
