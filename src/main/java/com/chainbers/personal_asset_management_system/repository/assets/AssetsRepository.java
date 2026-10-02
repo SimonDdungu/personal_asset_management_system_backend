@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AssetsRepository extends JpaRepository<Assets, UUID> {
-    List<Assets> findByNameContainingIgnoreCase(String name);
-    List<Assets> findByUserId(UUID userId);
+    List<Assets> findByNameContainingIgnoreCaseAndUserId(String name, UUID userId);
     List<Assets> findByAssetCategoryNameIgnoreCaseAndUserId(String assetCategoryName, UUID userId);
     List<Assets> findByAssetCategoryAssetTypeNameIgnoreCaseAndUserId(String assetTypeName, UUID userId);
     List<Assets> findByAcquisitionNameIgnoreCaseAndUserId(String acquisitionName, UUID userId);
