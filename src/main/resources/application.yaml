@@ -2,6 +2,9 @@ spring:
   application:
     name: personal_asset_management_system
 
+  flyway:
+    enabled: true
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate

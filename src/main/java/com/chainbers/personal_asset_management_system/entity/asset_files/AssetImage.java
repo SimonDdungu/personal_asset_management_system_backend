@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -32,11 +33,8 @@ public class AssetImage {
     @Column(name = "is_primary", nullable = false)
     private boolean isPrimary;
 
+    @CreationTimestamp
     @Column(name = "uploaded_at", nullable = false)
     private Instant uploadedAt;
 
-    @PrePersist
-    protected  void onCreate(){
-        uploadedAt = Instant.now();
-    }
 }
