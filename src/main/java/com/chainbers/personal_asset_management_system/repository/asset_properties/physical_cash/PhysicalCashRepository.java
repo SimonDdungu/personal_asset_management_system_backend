@@ -9,9 +9,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface PhysicalCashRepository extends JpaRepository<PhysicalCash, UUID>, JpaSpecificationExecutor<PhysicalCash> {
-    List<PhysicalCash> findByAssetsNameContainingIgnoreCaseAndAssetsUserId(String assetsName, UUID userId);
-
-    List<PhysicalCash> findByCurrentValueBetweenAndAssetsUserId(BigDecimal min, BigDecimal max, UUID userId);
-
-    List<PhysicalCash> findByCurrentValueBetweenAndCurrencyIgnoreCaseAndAssetsUserId(BigDecimal min, BigDecimal max, String currency, UUID userId);
+    List<PhysicalCash> findByAssetsUserId(UUID userId);
 }

@@ -1,4 +1,12 @@
 package com.chainbers.personal_asset_management_system.repository.asset_properties.vehicle;
 
-public interface VehicleRepository {
+import com.chainbers.personal_asset_management_system.entity.asset_properties.vehicle.Vehicle;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import java.util.List;
+import java.util.UUID;
+
+public interface VehicleRepository extends JpaRepository<Vehicle, UUID>, JpaSpecificationExecutor<Vehicle> {
+    List<Vehicle> findByAssetsUserId(UUID userId);
 }

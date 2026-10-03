@@ -10,15 +10,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface BankAccountRepository extends JpaRepository<BankAccount, UUID>, JpaSpecificationExecutor<BankAccount> {
-    List<BankAccount> findByAssetsNameContainingIgnoreCaseAndAssetsUserId(String assetsName, UUID userId);
-
-    List<BankAccount> findByBankContainingIgnoreCaseAndAssetsUserId(String bank, UUID userId);
-
-    Optional<BankAccount> findByBankAccountNumberAndAssetsUserId(int bankAccNo, UUID userId);
-
-    boolean existsByBankAccountNumberAndAssetsUserId(int bankAccountNumber, UUID userId);
-
-    List<BankAccount> findByCurrentBalanceBetweenAndAssetsUserId(BigDecimal min, BigDecimal max, UUID userId);
-
-    List<BankAccount> findByCurrentBalanceBetweenAndCurrencyIgnoreCaseAndAssetsUserId(BigDecimal min, BigDecimal max, String currency, UUID userId);
+    List<BankAccount> findByAssetsUserId(UUID userId);
 }

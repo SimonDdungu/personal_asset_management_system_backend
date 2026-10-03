@@ -7,5 +7,4 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AssetTypeRepository extends JpaRepository<AssetType, UUID> {
-    List<AssetType> findByNameContainingIgnoreCase(String name);
 }
