@@ -35,11 +35,12 @@ public class Land {
     @Column(name = "plot_number", nullable = false)
     private String plotNumber;
 
-    @Column(name = "land_size", nullable = false)
-    private int landSize;
+    @Column(name = "land_size", nullable = false, precision = 12, scale = 2)
+    private BigDecimal landSize;
 
-    @Column(name = "land_size_unit", nullable = false, length = 3)
-    private String landSizeUnit;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "land_size_unit", nullable = false, length = 25)
+    private LandSizeUnit landSizeUnit;
 
     @Column(nullable = false, length = 3)
     private String currency;

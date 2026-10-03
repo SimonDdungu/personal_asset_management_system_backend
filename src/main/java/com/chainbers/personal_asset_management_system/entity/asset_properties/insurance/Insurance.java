@@ -42,8 +42,9 @@ public class Insurance {
     @Column(name = "premium_amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal premiumAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "premium_frequency", nullable = false)
-    private String premiumFrequency;
+    private PremiumFrequency premiumFrequency;
 
     @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
