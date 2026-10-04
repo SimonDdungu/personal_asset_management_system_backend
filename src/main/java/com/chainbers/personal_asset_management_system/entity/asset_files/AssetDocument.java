@@ -28,7 +28,7 @@ public class AssetDocument {
     @JoinColumn(name = "document_type_id", nullable = false)
     private AssetDocumentType assetDocumentType;
 
-    @Column(name = "document_url", nullable = false)
+    @Column(name = "document_url", nullable = false,  length = 2048)
     private String documentUrl;
 
     @Column

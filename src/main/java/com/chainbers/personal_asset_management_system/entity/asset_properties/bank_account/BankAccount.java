@@ -29,8 +29,8 @@ public class BankAccount {
     @Column(nullable = false)
     private String bank;
 
-    @Column(name = "bank_account_number", nullable = false)
-    private int bankAccountNumber;
+    @Column(name = "bank_account_number", nullable = false, length = 40)
+    private String bankAccountNumber;
 
     @Column(name = "interest_rate", precision = 5, scale = 2)
     private BigDecimal interestRate;
