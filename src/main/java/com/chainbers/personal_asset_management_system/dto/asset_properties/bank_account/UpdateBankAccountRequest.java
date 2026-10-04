@@ -22,10 +22,7 @@ public record UpdateBankAccountRequest(
 
         @Digits(integer = 17, fraction = 2, message = "Current balance exceeds limit.")
         @DecimalMin(value = "0.00", message = "Current balance cannot be negative.")
-        BigDecimal currentBalance,
+        BigDecimal currentBalance
 
-        @Digits(integer = 17, fraction = 2, message = "Previous balance exceeds limit.")
-        @DecimalMin(value = "0.00", message = "Previous balance cannot be negative.")
-        BigDecimal previousBalance
 ) {
 }
