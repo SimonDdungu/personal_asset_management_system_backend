@@ -1,6 +1,6 @@
 package com.chainbers.personal_asset_management_system.entity.assets;
 
-import com.chainbers.personal_asset_management_system.entity.users.User;
+import com.chainbers.personal_asset_management_system.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

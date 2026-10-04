@@ -33,7 +33,7 @@ public class RealEstate {
     @Column
     private String description;
 
-    @Column(name = "rental_income", precision = 16, scale = 2)
+    @Column(name = "rental_income", precision = 19, scale = 2)
     private BigDecimal rentalIncome;
 
     @Column(name = "rental_income_currency", length = 3)
@@ -57,11 +57,12 @@ public class RealEstate {
     @Column(name = "number_units")
     private Integer numberUnits;
 
-    @Column(name = "property_size")
-    private Integer propertySize;
+    @Column(name = "property_size", precision = 12, scale = 2)
+    private BigDecimal propertySize;
 
-    @Column(name = "property_size_unit", length = 3)
-    private String propertySizeUnit;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "property_size_unit", length = 25)
+    private PropertySizeUnit propertySizeUnit;
 
     @Column(name = "construction_cost", precision = 19, scale = 2)
     private BigDecimal constructionCost;
