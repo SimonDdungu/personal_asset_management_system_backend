@@ -6,13 +6,13 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record CreateAssetDocumentRequest(
-            @NotNull
+            @NotNull(message = "Asset is required!")
             UUID assetId,
 
-            @NotNull
+            @NotNull(message = "Document Type is required!")
             UUID assetDocumentTypeId,
 
-            @NotBlank
+            @NotBlank(message = "Document location is required!")
             String documentUrl,
 
             String caption

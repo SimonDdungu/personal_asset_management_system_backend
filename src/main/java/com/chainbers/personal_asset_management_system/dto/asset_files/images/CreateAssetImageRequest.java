@@ -6,10 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record CreateAssetImageRequest(
-        @NotNull
+        @NotNull(message = "Asset is required!")
         UUID assetId,
 
-        @NotBlank
+        @NotBlank(message = "Image location is required!")
         String imageUrl,
 
         String caption,

@@ -6,15 +6,15 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record AssetsRequest(
-        @NotBlank
+        @NotBlank(message = "Name of asset is required!")
         String name,
 
         String description,
 
-        @NotNull
+        @NotNull(message = "Asset Category is required!")
         UUID assetCategoryId,
 
-        @NotNull
+        @NotNull(message = "Acquisition is required!")
         UUID acquisitionId
 ) {
 }

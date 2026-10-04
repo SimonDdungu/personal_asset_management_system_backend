@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 
 public record UpdateAssetDocumentRequest(
-        @NotBlank
+        @NotBlank(message = "Document location is required!")
         String documentUrl,
 
         String caption
