@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public record AssetsRequest(
+public record CreateAssetsRequest(
         @NotBlank(message = "Name of asset is required!")
         String name,
 
