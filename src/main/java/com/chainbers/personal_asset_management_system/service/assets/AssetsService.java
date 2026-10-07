@@ -11,8 +11,12 @@ import com.chainbers.personal_asset_management_system.repository.assets.Acquisit
 import com.chainbers.personal_asset_management_system.repository.assets.AssetCategoryRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
 import com.chainbers.personal_asset_management_system.repository.user.UserRepository;
+import com.chainbers.personal_asset_management_system.specifications.assets.AssetsSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +54,11 @@ public class AssetsService {
     private Assets findDeletedAsset(UUID id, UUID userId){
         return assetsRepository.findByIdAndUserIdAndDeletedAtIsNotNull(id, userId)
                 .orElseThrow(() -> new EntityNotFoundException("Asset not found: " + id));
+    }
+
+    @Transactional(readOnly = true)
+    public AssetsResponse getById(UUID id, UUID userId) {
+        return toResponse(findAsset(id, userId));
     }
 
     @Transactional
@@ -109,7 +118,28 @@ public class AssetsService {
         assetsRepository.delete(asset);
     }
 
+    @Transactional(readOnly = true)
+    public Page<AssetsResponse> search(String name, UUID categoryId, UUID acquisitionId, UUID userId, Pageable pageable){
+        Specification<Assets> specification = Specification.allOf(
+                AssetsSpecification.belongsTo(userId),
+                AssetsSpecification.hasAcquisition(acquisitionId),
+                AssetsSpecification.hasCategory(categoryId),
+                AssetsSpecification.nameContains(name),
+                AssetsSpecification.isNotDeleted()
+        );
 
+        return assetsRepository.findAll(specification, pageable).map(this::toResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AssetsResponse> getDeletedAssets(UUID userId, Pageable pageable) {
+        Specification<Assets> specification = Specification.allOf(
+                AssetsSpecification.belongsTo(userId),
+                AssetsSpecification.isDeleted()
+        );
+
+        return assetsRepository.findAll(specification, pageable).map(this::toResponse);
+    }
 
 
     private AssetsResponse toResponse(Assets a) {
