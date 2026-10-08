@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ElectronicsRepository extends JpaRepository<Electronics, UUID>, JpaSpecificationExecutor<ElectronicsRepository> {
-    List<Electronics> findByAssetsUserId(UUID userId);
-
+    Optional<Electronics> findByIdAndAssetsUserId(UUID id, UUID userId);
 }

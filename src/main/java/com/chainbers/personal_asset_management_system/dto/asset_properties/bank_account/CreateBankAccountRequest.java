@@ -21,15 +21,15 @@ public record CreateBankAccountRequest(
         @Digits(integer = 3, fraction = 2, message = "Interest rate exceeds limit.")
         BigDecimal interestRate,
 
-        @NotBlank(message = "Currency is required!") @Size(max = 3, message = "Currency cannot exceed 3 characters.")
+        @NotBlank(message = "Currency is required.") @Size(max = 3, message = "Currency cannot exceed 3 characters.")
         String currency,
 
-        @NotNull(message = "Current Balance is required")
+        @NotNull(message = "Current Balance is required.")
         @Digits(integer = 17, fraction = 2, message = "Current balance exceeds limit.")
         @DecimalMin(value = "0.00", message = "Current balance cannot be negative.")
         BigDecimal currentBalance,
 
-        @NotNull(message = "Previous Balance is required!")
+        @NotNull(message = "Previous Balance is required.")
         @Digits(integer = 17, fraction = 2, message = "Previous balance exceeds limit.")
         @DecimalMin(value = "0.00", message = "Previous balance cannot be negative.")
         BigDecimal previousBalance

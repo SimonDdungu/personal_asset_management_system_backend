@@ -11,7 +11,7 @@ import com.chainbers.personal_asset_management_system.repository.assets.Acquisit
 import com.chainbers.personal_asset_management_system.repository.assets.AssetCategoryRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
 import com.chainbers.personal_asset_management_system.repository.user.UserRepository;
-import com.chainbers.personal_asset_management_system.specifications.assets.AssetsSpecification;
+import com.chainbers.personal_asset_management_system.specifications.assets.AssetSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -121,11 +121,11 @@ public class AssetsService {
     @Transactional(readOnly = true)
     public Page<AssetsResponse> search(String name, UUID categoryId, UUID acquisitionId, UUID userId, Pageable pageable){
         Specification<Assets> specification = Specification.allOf(
-                AssetsSpecification.belongsTo(userId),
-                AssetsSpecification.hasAcquisition(acquisitionId),
-                AssetsSpecification.hasCategory(categoryId),
-                AssetsSpecification.nameContains(name),
-                AssetsSpecification.isNotDeleted()
+                AssetSpecification.belongsTo(userId),
+                AssetSpecification.hasAcquisition(acquisitionId),
+                AssetSpecification.hasCategory(categoryId),
+                AssetSpecification.nameContains(name),
+                AssetSpecification.isNotDeleted()
         );
 
         return assetsRepository.findAll(specification, pageable).map(this::toResponse);
@@ -134,8 +134,8 @@ public class AssetsService {
     @Transactional(readOnly = true)
     public Page<AssetsResponse> getDeletedAssets(UUID userId, Pageable pageable) {
         Specification<Assets> specification = Specification.allOf(
-                AssetsSpecification.belongsTo(userId),
-                AssetsSpecification.isDeleted()
+                AssetSpecification.belongsTo(userId),
+                AssetSpecification.isDeleted()
         );
 
         return assetsRepository.findAll(specification, pageable).map(this::toResponse);

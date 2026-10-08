@@ -5,7 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.UUID;
 
-public class AssetsSpecification {
+public class AssetSpecification {
 
     public static Specification<Assets> nameContains(String name) {
         return (root, query, cb) -> (name == null || name.isBlank())
