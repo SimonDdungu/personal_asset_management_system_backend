@@ -1,11 +1,16 @@
 package com.chainbers.personal_asset_management_system.dto.asset_properties.electronics;
 
+import com.chainbers.personal_asset_management_system.dto.assets.CreateAssetsRequest;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 public record CreateElectronicsRequest(
+        @Valid @NotNull
+        CreateAssetsRequest asset,
+
         @NotNull(message = "Asset is required.")
         UUID assetId,
 

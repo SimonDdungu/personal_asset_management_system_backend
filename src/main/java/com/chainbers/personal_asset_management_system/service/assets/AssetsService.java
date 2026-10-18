@@ -62,7 +62,12 @@ public class AssetsService {
     }
 
     @Transactional
-    public AssetsResponse create(CreateAssetsRequest request, UUID userId){
+    public AssetsResponse create(CreateAssetsRequest request, UUID userId) {
+        return toResponse(createEntity(request, userId));
+    }
+
+    @Transactional
+    public Assets createEntity(CreateAssetsRequest request, UUID userId){
         Assets assets = new Assets();
         assets.setUser(findUser(userId));
         assets.setName(request.name());
@@ -70,9 +75,7 @@ public class AssetsService {
         assets.setAssetCategory(findCategory(request.assetCategoryId()));
         assets.setDescription(request.description());
 
-        Assets savedAssets = assetsRepository.save(assets);
-
-        return toResponse(savedAssets);
+        return assetsRepository.save(assets);
     }
 
     @Transactional

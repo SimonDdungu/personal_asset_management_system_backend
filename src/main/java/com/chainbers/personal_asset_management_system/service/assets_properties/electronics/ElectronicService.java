@@ -3,10 +3,12 @@ package com.chainbers.personal_asset_management_system.service.assets_properties
 import com.chainbers.personal_asset_management_system.dto.asset_properties.electronics.CreateElectronicsRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.electronics.ElectronicsResponse;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.electronics.UpdateElectronicsRequest;
+import com.chainbers.personal_asset_management_system.dto.assets.AssetsResponse;
 import com.chainbers.personal_asset_management_system.entity.asset_properties.electronics.Electronics;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.repository.asset_properties.electronics.ElectronicsRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
+import com.chainbers.personal_asset_management_system.service.assets.AssetsService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.UUID;
 public class ElectronicService {
     private final ElectronicsRepository electronicsRepository;
     private final AssetsRepository assetsRepository;
+    private final AssetsService assetsService;
 
     private Assets findAsset(UUID assetId, UUID userId){
         return assetsRepository.findByIdAndUserIdAndDeletedAtIsNull(assetId, userId)
@@ -38,8 +41,10 @@ public class ElectronicService {
 
     @Transactional
     public ElectronicsResponse create(CreateElectronicsRequest request, UUID userId){
+        Assets asset = assetsService.createEntity(request.asset(), userId);
+
         Electronics electronics = new Electronics();
-        electronics.setAssets(findAsset(request.assetId(), userId));
+        electronics.setAssets(asset);
         electronics.setBrand(request.brand());
         electronics.setModel(request.model());
         electronics.setColor(request.color());
