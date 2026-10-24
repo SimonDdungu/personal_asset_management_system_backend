@@ -11,9 +11,6 @@ public record CreateElectronicsRequest(
         @Valid @NotNull
         CreateAssetsRequest asset,
 
-        @NotNull(message = "Asset is required.")
-        UUID assetId,
-
         @NotBlank(message = "Brand is required.") @Size(max = 255, message = "Brand exceeds limit.")
         String brand,
 

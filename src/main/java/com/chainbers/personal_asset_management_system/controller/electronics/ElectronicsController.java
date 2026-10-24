@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/electronics")
+@RequestMapping("assets/electronics")
 @RequiredArgsConstructor
 public class ElectronicsController {
     private final ElectronicService electronicService;
