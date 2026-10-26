@@ -3,3 +3,18 @@ spring:
     url: jdbc:postgresql://localhost:5432/yourapp_db
     username: your_actual_username
     password: your_actual_password
+
+  mvc:
+    servlet:
+      path: /api
+
+app:
+  jwt:
+    secret: s2uoCW8GpC0K9/Hq0fJfNT7IRGxRiMZK8TzOxR0N7Lg=  #${JWT_SECRET}
+    expiration-ms: 3600000        # 1 hour
+  cookie:
+    name: access_token
+    secure: false                 # set to true in production (HTTPS)
+    same-site: Lax                # Lax or Strict
+  cors:
+    allowed-origins: http://localhost:3000
