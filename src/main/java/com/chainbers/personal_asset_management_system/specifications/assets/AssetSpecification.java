@@ -8,33 +8,33 @@ import java.util.UUID;
 public class AssetSpecification {
 
     public static Specification<Assets> nameContains(String name) {
-        return (root, query, cb) -> (name == null || name.isBlank())
+        return (root, query, criteriaBuilder) -> (name == null || name.isBlank())
                 ? null
-                : cb.like(cb.lower(root.get("name")), "%" + name.trim().toLowerCase() + "%");
+                : criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + name.trim().toLowerCase() + "%");
     }
 
     public static Specification<Assets> hasCategory(UUID categoryId){
-        return (root, query, cb) -> (categoryId == null)
+        return (root, query, criteriaBuilder) -> (categoryId == null)
                 ?  null
-                : cb.equal(root.get("assetCategory").get("id"), categoryId);
+                : criteriaBuilder.equal(root.get("assetCategory").get("id"), categoryId);
     }
 
     public static Specification<Assets> hasAcquisition(UUID acquisitionId){
-        return (root, query, cb) -> (acquisitionId == null)
+        return (root, query, criteriaBuilder) -> (acquisitionId == null)
                 ? null
-                : cb.equal(root.get("acquisition").get("id"), acquisitionId);
+                : criteriaBuilder.equal(root.get("acquisition").get("id"), acquisitionId);
     }
 
     public static Specification<Assets> belongsTo(UUID userId) {
-        return (root, query, cb) -> cb.equal(root.get("user").get("id"), userId);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user").get("id"), userId);
     }
 
     public static Specification<Assets> isNotDeleted() {
-        return (root, query, cb) -> cb.isNull(root.get("deletedAt"));
+        return (root, query, criteriaBuilder) -> criteriaBuilder.isNull(root.get("deletedAt"));
     }
 
     public static Specification<Assets> isDeleted() {
-        return (root, query, cb) -> cb.isNotNull(root.get("deletedAt"));
+        return (root, query, criteriaBuilder) -> criteriaBuilder.isNotNull(root.get("deletedAt"));
     }
 
 }

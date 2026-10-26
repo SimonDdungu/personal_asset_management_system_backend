@@ -1,5 +1,6 @@
 package com.chainbers.personal_asset_management_system.service.assets;
 
+import com.chainbers.personal_asset_management_system.dto.assets.AssetSearchFilter;
 import com.chainbers.personal_asset_management_system.dto.assets.CreateAssetsRequest;
 import com.chainbers.personal_asset_management_system.dto.assets.AssetsResponse;
 import com.chainbers.personal_asset_management_system.dto.assets.UpdateAssetsRequest;
@@ -122,12 +123,12 @@ public class AssetsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<AssetsResponse> search(String name, UUID categoryId, UUID acquisitionId, UUID userId, Pageable pageable){
+    public Page<AssetsResponse> search(AssetSearchFilter filter, UUID userId, Pageable pageable){
         Specification<Assets> specification = Specification.allOf(
                 AssetSpecification.belongsTo(userId),
-                AssetSpecification.hasAcquisition(acquisitionId),
-                AssetSpecification.hasCategory(categoryId),
-                AssetSpecification.nameContains(name),
+                AssetSpecification.hasAcquisition(filter.acquisitionId()),
+                AssetSpecification.hasCategory(filter.assetCategoryId()),
+                AssetSpecification.nameContains(filter.name()),
                 AssetSpecification.isNotDeleted()
         );
 

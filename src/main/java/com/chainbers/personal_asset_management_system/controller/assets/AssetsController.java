@@ -1,5 +1,6 @@
 package com.chainbers.personal_asset_management_system.controller.assets;
 
+import com.chainbers.personal_asset_management_system.dto.assets.AssetSearchFilter;
 import com.chainbers.personal_asset_management_system.dto.assets.AssetsResponse;
 import com.chainbers.personal_asset_management_system.dto.assets.CreateAssetsRequest;
 import com.chainbers.personal_asset_management_system.dto.assets.UpdateAssetsRequest;
@@ -36,10 +37,8 @@ public class AssetsController {
     }
 
     @GetMapping
-    public Page<AssetsResponse> searchAssets(@RequestParam UUID userId, @RequestParam(required = false) String name,
-                                             @RequestParam(required = false) UUID categoryId,
-                                             @RequestParam(required = false) UUID acquisitionId, Pageable pageable) {
-        return assetsService.search(name, categoryId, acquisitionId, userId, pageable);
+    public Page<AssetsResponse> searchAssets(AssetSearchFilter filters, @RequestParam UUID userId, Pageable pageable) {
+        return assetsService.search(filters, userId, pageable);
     }
 
 

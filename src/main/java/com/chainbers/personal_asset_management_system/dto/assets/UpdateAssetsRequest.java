@@ -9,7 +9,7 @@ public record UpdateAssetsRequest(
         @Size(max = 255, message = "Asset name exceeds limit.")
         String name,
 
-        @Size(max = 255, message = "description exceeds limit.")
+        @Size(max = 255, message = "Asset description exceeds limit.")
         String description,
 
         UUID assetCategoryId,

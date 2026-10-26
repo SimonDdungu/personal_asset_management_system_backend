@@ -1,19 +1,24 @@
 package com.chainbers.personal_asset_management_system.service.assets_properties.electronics;
 
-import com.chainbers.personal_asset_management_system.dto.asset_properties.electronics.CreateElectronicsRequest;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.electronics.ElectronicsResponse;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.electronics.UpdateElectronicsRequest;
-import com.chainbers.personal_asset_management_system.dto.assets.AssetsResponse;
-import com.chainbers.personal_asset_management_system.entity.asset_properties.electronics.Electronics;
+import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.CreateElectronicsRequest;
+import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicSearchFilter;
+import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicsResponse;
+import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.UpdateElectronicsRequest;
+import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.electronics.Electronics;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
-import com.chainbers.personal_asset_management_system.repository.asset_properties.electronics.ElectronicsRepository;
+import com.chainbers.personal_asset_management_system.repository.asset_properties.physical_assets.electronics.ElectronicsRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
 import com.chainbers.personal_asset_management_system.service.assets.AssetsService;
+import com.chainbers.personal_asset_management_system.specifications.asset_properties.electronics.ElectronicSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -66,33 +71,46 @@ public class ElectronicService {
             electronics.setBrand(request.brand());
         }
 
-        if(request.model() != null && !request.model().isBlank()) {
-            electronics.setModel(request.model());
-        }
+        electronics.setModel(request.model());
 
-        if(request.color() != null && !request.color().isBlank()) {
-            electronics.setColor(request.color());
-        }
+        electronics.setColor(request.color());
 
-        if(request.year() != null) {
-            electronics.setYear(request.year());
-        }
+        electronics.setYear(request.year());
 
-        if(request.serialNumber() != null && !request.serialNumber().isBlank()) {
-            electronics.setSerialNumber(request.serialNumber());
-        }
+        electronics.setSerialNumber(request.serialNumber());
 
-        if(request.currency() != null && !request.currency().isBlank()) {
+        if(request.currency() != null) {
             electronics.setCurrency(request.currency());
         }
 
-        if(request.currentValue() != null) {
+        if(request.currentValue() != null && request.currentValue().compareTo(BigDecimal.ZERO) >= 0 ) {
             electronics.setCurrentValue(request.currentValue());
             electronics.setCurrentValueUpdatedAt(Instant.now());
         }
 
         return toResponse(electronics);
     }
+
+    @Transactional(readOnly = true)
+    public Page<ElectronicsResponse> search(ElectronicSearchFilter filters, UUID userId, Pageable pageable){
+        Specification<Electronics> specification = Specification.allOf(
+                ElectronicSpecification.belongsTo(userId),
+                ElectronicSpecification.nameContainsAsset(filters.assetName()),
+                ElectronicSpecification.nameContainsBrand(filters.brand()),
+                ElectronicSpecification.nameContainsModel(filters.model()),
+                ElectronicSpecification.currencyIs(filters.currency()),
+                ElectronicSpecification.nameContainsSerialNumber(filters.serialNumber()),
+                ElectronicSpecification.nameContainsColor(filters.color()),
+                ElectronicSpecification.currentValueFrom(filters.minValue()),
+                ElectronicSpecification.currentValueTo(filters.maxValue()),
+                ElectronicSpecification.yearFrom(filters.minYear()),
+                ElectronicSpecification.yearTo(filters.maxYear()),
+                ElectronicSpecification.isNotDeleted()
+        );
+
+        return electronicsRepository.findAll(specification, pageable).map(this::toResponse);
+    }
+
 
 
 
