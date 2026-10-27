@@ -1,4 +1,4 @@
-package com.chainbers.personal_asset_management_system.service.assets_properties.electronics;
+package com.chainbers.personal_asset_management_system.service.assets_properties.physical_assets.electronics;
 
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.CreateElectronicsRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicSearchFilter;
@@ -9,7 +9,7 @@ import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.repository.asset_properties.physical_assets.electronics.ElectronicsRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
 import com.chainbers.personal_asset_management_system.service.assets.AssetsService;
-import com.chainbers.personal_asset_management_system.specifications.asset_properties.electronics.ElectronicSpecification;
+import com.chainbers.personal_asset_management_system.specifications.asset_properties.physical_assets.electronics.ElectronicSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,13 +26,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ElectronicService {
     private final ElectronicsRepository electronicsRepository;
-    private final AssetsRepository assetsRepository;
     private final AssetsService assetsService;
 
-    private Assets findAsset(UUID assetId, UUID userId){
-        return assetsRepository.findByIdAndUserIdAndDeletedAtIsNull(assetId, userId)
-                .orElseThrow(() -> new EntityNotFoundException("Asset not found: " + assetId));
-    }
 
     private Electronics findElectronic(UUID id, UUID userId){
         return electronicsRepository.findByIdAndAssetsUserId(id, userId)
@@ -88,6 +83,8 @@ public class ElectronicService {
             electronics.setCurrentValueUpdatedAt(Instant.now());
         }
 
+        electronics.setUpdatedAt(Instant.now());
+
         return toResponse(electronics);
     }
 
@@ -110,11 +107,6 @@ public class ElectronicService {
 
         return electronicsRepository.findAll(specification, pageable).map(this::toResponse);
     }
-
-
-
-
-
 
 
     private ElectronicsResponse toResponse(Electronics e){

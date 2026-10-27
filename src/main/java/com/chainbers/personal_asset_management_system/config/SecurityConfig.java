@@ -32,7 +32,8 @@ public class SecurityConfig {
                                 "/auth/register",
                                 "/auth/login",
                                 "/auth/logout",
-                                "/assets/electronics/**"
+                                "/assets/electronics/**",
+                                "/assets/realestate/**"
                         ).permitAll().anyRequest().authenticated())
                 .exceptionHandling(exceptions -> exceptions.authenticationEntryPoint(
                                 new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))

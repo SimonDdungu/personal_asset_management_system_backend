@@ -4,7 +4,7 @@ import com.chainbers.personal_asset_management_system.dto.asset_properties.physi
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicSearchFilter;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicsResponse;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.UpdateElectronicsRequest;
-import com.chainbers.personal_asset_management_system.service.assets_properties.electronics.ElectronicService;
+import com.chainbers.personal_asset_management_system.service.assets_properties.physical_assets.electronics.ElectronicService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

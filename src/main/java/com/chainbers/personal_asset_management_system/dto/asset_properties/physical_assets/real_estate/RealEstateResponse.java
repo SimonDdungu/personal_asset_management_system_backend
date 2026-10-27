@@ -3,10 +3,18 @@ package com.chainbers.personal_asset_management_system.dto.asset_properties.phys
 import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.real_estate.PropertySizeUnit;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Currency;
+import java.util.UUID;
 
 public record RealEstateResponse(
+        UUID id,
+
+        UUID assetId,
+
+        String assetName,
+
         String address,
 
         String description,
@@ -33,6 +41,12 @@ public record RealEstateResponse(
 
         Currency currency,
 
-        BigDecimal currentValue
+        BigDecimal currentValue,
+
+        Instant currentValueUpdatedAt,
+
+        Instant createdAt,
+
+        Instant updatedAt
 ) {
 }

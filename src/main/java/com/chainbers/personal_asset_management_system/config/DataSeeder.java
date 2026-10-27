@@ -6,6 +6,7 @@ import com.chainbers.personal_asset_management_system.entity.assets.AssetType;
 import com.chainbers.personal_asset_management_system.repository.assets.AcquisitionRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetCategoryRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetTypeRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -61,7 +62,7 @@ public class DataSeeder implements CommandLineRunner {
 
     private void seedCategories(String assetTypeName, String[] categories) {
         AssetType assetType = assetTypeRepository.findByName(assetTypeName)
-                .orElseThrow(() -> new IllegalStateException("Asset type not found: " + assetTypeName));
+                .orElseThrow(() -> new EntityNotFoundException("Asset type not found: " + assetTypeName));
 
         for (String name : categories) {
             if (assetCategoryRepository.findByNameAndAssetType(name, assetType).isEmpty()) {

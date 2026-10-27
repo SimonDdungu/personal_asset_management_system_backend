@@ -7,8 +7,8 @@ import java.time.LocalDate;
 import java.util.Currency;
 
 public record RealEstateSearchFilter(
+        String assetName,
         String address,
-
 
         Integer minNumberBedrooms,
         Integer maxNumberBedrooms,
@@ -22,21 +22,22 @@ public record RealEstateSearchFilter(
         BigDecimal minPropertySize,
         BigDecimal maxPropertySize,
 
-        PropertySizeUnit propertySizeUnit,
+        String propertySizeUnit,
 
-        Currency constructionCostCurrency,
+        String constructionCostCurrency,
 
         BigDecimal minConstructionCost,
         BigDecimal maxConstructionCost,
 
-        LocalDate constructionCompletionDate,
+        LocalDate minConstructionCompletionDate,
+        LocalDate maxConstructionCompletionDate,
 
-        Currency rentalIncomeCurrency,
+        String rentalIncomeCurrency,
 
         BigDecimal minRentalIncome,
         BigDecimal maxRentalIncome,
 
-        Currency currency,
+        String currency,
 
         BigDecimal minValue,
         BigDecimal maxValue
