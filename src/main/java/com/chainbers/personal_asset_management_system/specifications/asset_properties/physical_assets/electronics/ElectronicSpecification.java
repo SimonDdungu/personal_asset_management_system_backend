@@ -10,7 +10,7 @@ public class ElectronicSpecification {
     public static Specification<Electronics> nameContainsAsset(String assetName){
         return (root, query, cb) -> (assetName == null || assetName.isBlank())
                 ? null
-                : cb.like(cb.lower(root.get("asset").get("name")), "%" + assetName.trim().toLowerCase() + "%");
+                : cb.like(cb.lower(root.get("assets").get("name")), "%" + assetName.trim().toLowerCase() + "%");
     }
 
     public static Specification<Electronics> nameContainsBrand(String brandName){
