@@ -18,3 +18,8 @@ app:
     same-site: Lax                # Lax or Strict
   cors:
     allowed-origins: http://localhost:3000
+
+supabase:
+  url: https://{PROJECT_ID}.supabase.co
+  service-key: { Your Supabase Service Key }
+  bucket: { Your bucket }
