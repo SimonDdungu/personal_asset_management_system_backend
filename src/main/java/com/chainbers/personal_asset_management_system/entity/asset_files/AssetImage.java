@@ -24,8 +24,8 @@ public class AssetImage {
     @JoinColumn(name = "asset_id", nullable = false)
     private Assets assets;
 
-    @Column(name = "image_url", nullable = false,  length = 2048)
-    private String imageUrl;
+    @Column(name = "image_path", nullable = false,  length = 2048)
+    private String imagePath;
 
     @Column
     private String caption;

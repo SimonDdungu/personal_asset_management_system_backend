@@ -1,0 +1,1 @@
+ALTER TABLE asset_images RENAME COLUMN image_url TO image_path;
