@@ -4,17 +4,20 @@ import com.chainbers.personal_asset_management_system.dto.assets.AssetSearchFilt
 import com.chainbers.personal_asset_management_system.dto.assets.CreateAssetsRequest;
 import com.chainbers.personal_asset_management_system.dto.assets.AssetsResponse;
 import com.chainbers.personal_asset_management_system.dto.assets.UpdateAssetsRequest;
+import com.chainbers.personal_asset_management_system.entity.asset_files.documents.AssetDocumentUpload;
 import com.chainbers.personal_asset_management_system.entity.asset_files.images.AssetImageUpload;
 import com.chainbers.personal_asset_management_system.entity.assets.Acquisition;
 import com.chainbers.personal_asset_management_system.entity.assets.AssetCategory;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.entity.user.User;
+import com.chainbers.personal_asset_management_system.repository.asset_files.documents.AssetDocumentUploadRepository;
 import com.chainbers.personal_asset_management_system.repository.asset_files.images.AssetImageRepository;
 import com.chainbers.personal_asset_management_system.repository.asset_files.images.AssetImageUploadRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AcquisitionRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetCategoryRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
 import com.chainbers.personal_asset_management_system.repository.user.UserRepository;
+import com.chainbers.personal_asset_management_system.service.asset_files.documents.AssetDocumentService;
 import com.chainbers.personal_asset_management_system.service.asset_files.images.AssetImageService;
 import com.chainbers.personal_asset_management_system.specifications.assets.AssetSpecification;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,9 +40,10 @@ public class AssetsService {
     private final AssetCategoryRepository assetCategoryRepository;
     private final UserRepository userRepository;
     private final AcquisitionRepository acquisitionRepository;
-    private final AssetImageRepository assetImageRepository;
     private final AssetImageUploadRepository assetImageUploadRepository;
+    private final AssetDocumentUploadRepository assetDocumentUploadRepository;
     private final AssetImageService assetImageService;
+    private final AssetDocumentService assetDocumentService;
 
     private AssetCategory findCategory(UUID id) {
         return assetCategoryRepository.findById(id)
@@ -141,10 +145,15 @@ public class AssetsService {
         Assets asset = assetsRepository.findByIdAndUserId(id, userId)
                             .orElseThrow(() -> new EntityNotFoundException("Asset not found"));
 
-        List<AssetImageUpload> uploads = assetImageUploadRepository.findAllByAssetsId(asset.getId());
+        List<AssetImageUpload> imageUploads = assetImageUploadRepository.findAllByAssetsId(asset.getId());
+        List<AssetDocumentUpload> documentUploads = assetDocumentUploadRepository.findAllByAssetsId(asset.getId());
 
-        for (AssetImageUpload upload : uploads) {
+        for (AssetImageUpload upload : imageUploads) {
             assetImageService.deleteUpload(upload.getId(), userId);
+        }
+
+        for (AssetDocumentUpload upload : documentUploads) {
+            assetDocumentService.deleteUpload(upload.getId(), userId);
         }
 
         assetsRepository.delete(asset);
