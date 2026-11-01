@@ -6,14 +6,8 @@ import java.util.UUID;
 public record AssetImageResponse(
         UUID id,
 
-        UUID assetId,
-
         String imageUrl,
 
-        String caption,
-
-        boolean isPrimary,
-
-        Instant uploadedAt
+        boolean isPrimary
 ) {
 }

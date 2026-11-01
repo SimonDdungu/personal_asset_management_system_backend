@@ -1,6 +1,6 @@
-package com.chainbers.personal_asset_management_system.repository.asset_files;
+package com.chainbers.personal_asset_management_system.repository.asset_files.images;
 
-import com.chainbers.personal_asset_management_system.entity.asset_files.AssetImageUpload;
+import com.chainbers.personal_asset_management_system.entity.asset_files.images.AssetImageUpload;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

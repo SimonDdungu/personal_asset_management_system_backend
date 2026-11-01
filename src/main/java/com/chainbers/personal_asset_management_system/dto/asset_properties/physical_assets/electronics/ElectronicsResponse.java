@@ -1,6 +1,8 @@
 package com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics;
 
+import com.chainbers.personal_asset_management_system.dto.asset_files.documents.AssetDocumentUploadResponse;
 import com.chainbers.personal_asset_management_system.dto.asset_files.images.AssetImageResponse;
+import com.chainbers.personal_asset_management_system.dto.asset_files.images.AssetImageUploadResponse;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -31,7 +33,9 @@ public record ElectronicsResponse(
 
         Instant currentValueUpdatedAt,
 
-        List<AssetImageResponse> images,
+        List<AssetImageUploadResponse> images,
+
+        List<AssetDocumentUploadResponse> documents,
 
         Instant createdAt,
 

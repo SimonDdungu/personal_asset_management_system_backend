@@ -1,6 +1,5 @@
 package com.chainbers.personal_asset_management_system.service.assets_properties.physical_assets.electronics;
 
-import com.chainbers.personal_asset_management_system.dto.asset_files.images.CreateAssetImageRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.CreateElectronicsRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicSearchFilter;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicsResponse;
@@ -8,7 +7,7 @@ import com.chainbers.personal_asset_management_system.dto.asset_properties.physi
 import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.electronics.Electronics;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.repository.asset_properties.physical_assets.electronics.ElectronicsRepository;
-import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
+import com.chainbers.personal_asset_management_system.service.asset_files.documents.AssetDocumentService;
 import com.chainbers.personal_asset_management_system.service.asset_files.images.AssetImageService;
 import com.chainbers.personal_asset_management_system.service.assets.AssetsService;
 import com.chainbers.personal_asset_management_system.specifications.asset_properties.physical_assets.electronics.ElectronicSpecification;
@@ -30,6 +29,7 @@ public class ElectronicService {
     private final ElectronicsRepository electronicsRepository;
     private final AssetsService assetsService;
     private final AssetImageService assetImageService;
+    private final AssetDocumentService assetDocumentService;
 
     private Electronics findElectronic(UUID id, UUID userId){
         return electronicsRepository.findByIdAndAssetsUserId(id, userId)
@@ -57,6 +57,10 @@ public class ElectronicService {
 
         if (request.images() != null && !request.images().images().isEmpty()) {
             assetImageService.create(request.images(), asset);
+        }
+
+        if (request.documents() != null && !request.documents().documents().isEmpty()) {
+            assetDocumentService.create(request.documents(), asset);
         }
 
         return toResponse(savedElectronics);
@@ -118,6 +122,7 @@ public class ElectronicService {
                 e.getAssets().getCurrentValue(),
                 e.getAssets().getCurrentValueUpdatedAt(),
                 assetImageService.getImagesByAssetId(assets.getId()),
+                assetDocumentService.getDocumentByAssetId(assets.getId()),
                 e.getCreatedAt(),
                 e.getUpdatedAt()
         );

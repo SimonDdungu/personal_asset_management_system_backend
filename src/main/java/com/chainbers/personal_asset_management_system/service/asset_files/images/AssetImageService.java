@@ -1,13 +1,14 @@
 package com.chainbers.personal_asset_management_system.service.asset_files.images;
 
 import com.chainbers.personal_asset_management_system.dto.asset_files.images.AssetImageResponse;
+import com.chainbers.personal_asset_management_system.dto.asset_files.images.AssetImageUploadResponse;
 import com.chainbers.personal_asset_management_system.dto.asset_files.images.CreateAssetImageRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_files.images.UpdateAssetImageRequest;
-import com.chainbers.personal_asset_management_system.entity.asset_files.AssetImage;
-import com.chainbers.personal_asset_management_system.entity.asset_files.AssetImageUpload;
+import com.chainbers.personal_asset_management_system.entity.asset_files.images.AssetImage;
+import com.chainbers.personal_asset_management_system.entity.asset_files.images.AssetImageUpload;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
-import com.chainbers.personal_asset_management_system.repository.asset_files.AssetImageRepository;
-import com.chainbers.personal_asset_management_system.repository.asset_files.AssetImageUploadRepository;
+import com.chainbers.personal_asset_management_system.repository.asset_files.images.AssetImageRepository;
+import com.chainbers.personal_asset_management_system.repository.asset_files.images.AssetImageUploadRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
 import com.chainbers.personal_asset_management_system.storage.SupabaseFileStorage;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -25,11 +27,10 @@ import java.util.UUID;
 public class AssetImageService {
     private final AssetImageRepository assetImageRepository;
     private final AssetImageUploadRepository assetImageUploadRepository;
-    private final AssetsRepository assetsRepository;
     private final SupabaseFileStorage fileStorage;
 
     @Transactional
-    public List<AssetImageResponse> create(CreateAssetImageRequest request,  Assets asset){
+    public AssetImageUploadResponse create(CreateAssetImageRequest request,  Assets asset){
         if (request.images() == null || request.images().isEmpty()) {
             throw new IllegalArgumentException("No images available");
         }
@@ -61,20 +62,27 @@ public class AssetImageService {
             images.add(image);
         }
 
-        return assetImageRepository.saveAll(images)
-                .stream()
-                .map(image -> new AssetImageResponse(
-                        image.getId(),
-                        image.getAssetImageUpload().getAssets().getId(),
-                        fileStorage.signedUrl(image.getImagePath()),
-                        image.getAssetImageUpload().getCaption(),
-                        image.isPrimary(),
-                        image.getAssetImageUpload().getUploadedAt()
-                )).toList();
+        List<AssetImageResponse> imageResponse = assetImageRepository.saveAll(images)
+                                                        .stream()
+                                                        .map(image -> new AssetImageResponse(
+                                                                image.getId(),
+                                                                fileStorage.signedUrl(image.getImagePath()),
+                                                                image.isPrimary()
+                                                        ))
+                                                        .toList();
+
+        return new AssetImageUploadResponse(
+                upload.getId(),
+                asset.getId(),
+                upload.getCaption(),
+                upload.getUploadedAt(),
+                upload.getUpdatedAt(),
+                imageResponse
+        );
     }
 
     @Transactional
-    public List<AssetImageResponse> update(UUID uploadId, UpdateAssetImageRequest request, UUID userId){
+    public AssetImageUploadResponse update(UUID uploadId, UpdateAssetImageRequest request, UUID userId){
         AssetImageUpload upload = assetImageUploadRepository.findByIdAndAssetsUserIdAndAssetsDeletedAtIsNull(uploadId, userId)
                                                         .orElseThrow(() -> new EntityNotFoundException("Image upload not found"));
 
@@ -96,37 +104,50 @@ public class AssetImageService {
             }
         }
 
-        assetImageUploadRepository.save(upload);
-        assetImageRepository.saveAll(images);
+        upload.setUpdatedAt(Instant.now());
 
-        return images.stream()
-                .map(image -> new AssetImageResponse(
-                        image.getId(),
-                        upload.getAssets().getId(),
-                        fileStorage.signedUrl(image.getImagePath()),
-                        upload.getCaption(),
-                        image.isPrimary(),
-                        upload.getUploadedAt()
-                ))
-                .toList();
+        assetImageUploadRepository.save(upload);
+
+        return new AssetImageUploadResponse(
+                upload.getId(),
+                upload.getAssets().getId(),
+                upload.getCaption(),
+                upload.getUploadedAt(),
+                upload.getUpdatedAt(),
+                images.stream()
+                        .map(image -> new AssetImageResponse(
+                                image.getId(),
+                                fileStorage.signedUrl(image.getImagePath()),
+                                image.isPrimary()
+                        ))
+                        .toList()
+        );
 
     }
 
-    public List<AssetImageResponse> getImagesByAssetId(UUID assetId) {
+    public List<AssetImageUploadResponse> getImagesByAssetId(UUID assetId) {
         List<AssetImageUpload> uploads = assetImageUploadRepository.findAllByAssetsId(assetId);
 
         return uploads.stream()
-                .flatMap(upload -> assetImageRepository
-                        .findAllByAssetImageUploadId(upload.getId())
-                        .stream()
-                        .map(image -> new AssetImageResponse(
-                                image.getId(),
-                                assetId,
-                                fileStorage.signedUrl(image.getImagePath()),
-                                upload.getCaption(),
-                                image.isPrimary(),
-                                upload.getUploadedAt()
-                        )))
+                .map(upload -> {
+                    List<AssetImageResponse> images = assetImageRepository.findAllByAssetImageUploadId(upload.getId())
+                                                            .stream()
+                                                            .map(image -> new AssetImageResponse(
+                                                                    image.getId(),
+                                                                    fileStorage.signedUrl(image.getImagePath()),
+                                                                    image.isPrimary()
+                                                            ))
+                                                            .toList();
+
+                    return new AssetImageUploadResponse(
+                            upload.getId(),
+                            assetId,
+                            upload.getCaption(),
+                            upload.getUploadedAt(),
+                            upload.getUpdatedAt(),
+                            images
+                    );
+                })
                 .toList();
     }
 

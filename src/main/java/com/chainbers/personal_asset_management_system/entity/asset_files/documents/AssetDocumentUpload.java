@@ -1,4 +1,4 @@
-package com.chainbers.personal_asset_management_system.entity.asset_files;
+package com.chainbers.personal_asset_management_system.entity.asset_files.documents;
 
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import jakarta.persistence.*;
@@ -6,16 +6,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "asset_documents")
+@Table(name = "asset_documents_upload")
 @Getter
 @Setter
 @NoArgsConstructor
-public class AssetDocument {
+public class AssetDocumentUpload {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -28,9 +29,6 @@ public class AssetDocument {
     @JoinColumn(name = "document_type_id", nullable = false)
     private AssetDocumentType assetDocumentType;
 
-    @Column(name = "document_url", nullable = false,  length = 2048)
-    private String documentUrl;
-
     @Column
     private String caption;
 
@@ -38,4 +36,7 @@ public class AssetDocument {
     @Column(name = "uploaded_at", nullable = false)
     private Instant uploadedAt;
 
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private Instant updatedAt;
 }

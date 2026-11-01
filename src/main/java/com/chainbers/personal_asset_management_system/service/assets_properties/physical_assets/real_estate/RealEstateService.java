@@ -1,19 +1,15 @@
 package com.chainbers.personal_asset_management_system.service.assets_properties.physical_assets.real_estate;
 
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.CreateElectronicsRequest;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicSearchFilter;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicsResponse;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.CreateRealEstateRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.RealEstateResponse;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.RealEstateSearchFilter;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.UpdateRealEstateRequest;
-import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.electronics.Electronics;
 import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.real_estate.RealEstate;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.repository.asset_properties.physical_assets.real_estate.RealEstateRepository;
+import com.chainbers.personal_asset_management_system.service.asset_files.documents.AssetDocumentService;
 import com.chainbers.personal_asset_management_system.service.asset_files.images.AssetImageService;
 import com.chainbers.personal_asset_management_system.service.assets.AssetsService;
-import com.chainbers.personal_asset_management_system.specifications.asset_properties.physical_assets.electronics.ElectronicSpecification;
 import com.chainbers.personal_asset_management_system.specifications.asset_properties.physical_assets.real_estate.RealEstateSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +29,7 @@ public class RealEstateService {
     private final RealEstateRepository realEstateRepository;
     private final AssetsService assetsService;
     private final AssetImageService assetImageService;
+    private final AssetDocumentService assetDocumentService;
 
     private RealEstate findRealEstate(UUID id, UUID userId){
         return realEstateRepository.findByIdAndAssetsUserId(id, userId)
@@ -75,6 +72,10 @@ public class RealEstateService {
 
         if (request.images() != null && !request.images().images().isEmpty()) {
             assetImageService.create(request.images(), asset);
+        }
+
+        if (request.documents() != null && !request.documents().documents().isEmpty()) {
+            assetDocumentService.create(request.documents(), asset);
         }
 
         return toResponse(savedRealEstate);
@@ -200,9 +201,9 @@ public class RealEstateService {
                 r.getAssets().getCurrentValue(),
                 r.getAssets().getCurrentValueUpdatedAt(),
                 assetImageService.getImagesByAssetId(assets.getId()),
+                assetDocumentService.getDocumentByAssetId(assets.getId()),
                 r.getCreatedAt(),
                 r.getUpdatedAt()
-
         );
     }
 

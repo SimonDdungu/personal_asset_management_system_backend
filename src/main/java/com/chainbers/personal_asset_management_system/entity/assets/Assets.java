@@ -1,6 +1,6 @@
 package com.chainbers.personal_asset_management_system.entity.assets;
 
-import com.chainbers.personal_asset_management_system.entity.asset_files.AssetImageUpload;
+import com.chainbers.personal_asset_management_system.entity.asset_files.images.AssetImageUpload;
 import com.chainbers.personal_asset_management_system.entity.asset_properties.financial_assets.bank_account.BankAccount;
 import com.chainbers.personal_asset_management_system.entity.asset_properties.financial_assets.insurance.Insurance;
 import com.chainbers.personal_asset_management_system.entity.asset_properties.financial_assets.investment.Investment;

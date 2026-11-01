@@ -6,14 +6,6 @@ import java.util.UUID;
 public record AssetDocumentResponse(
         UUID id,
 
-        UUID assetId,
-
-        UUID assetDocumentTypeId,
-
-        String documentUrl,
-
-        String caption,
-
-        Instant uploadedAt
+        String documentPath
 ) {
 }

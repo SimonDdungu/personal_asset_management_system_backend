@@ -1,4 +1,4 @@
-package com.chainbers.personal_asset_management_system.entity.asset_files;
+package com.chainbers.personal_asset_management_system.entity.asset_files.images;
 
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import jakarta.persistence.*;
