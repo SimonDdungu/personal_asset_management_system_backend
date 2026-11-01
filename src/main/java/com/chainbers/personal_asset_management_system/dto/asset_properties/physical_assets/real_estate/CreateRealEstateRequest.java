@@ -1,5 +1,6 @@
 package com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate;
 
+import com.chainbers.personal_asset_management_system.dto.asset_files.images.CreateAssetImageRequest;
 import com.chainbers.personal_asset_management_system.dto.assets.CreateAssetsRequest;
 import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.real_estate.PropertySizeUnit;
 import jakarta.validation.Valid;
@@ -12,6 +13,9 @@ import java.util.Currency;
 public record CreateRealEstateRequest(
         @Valid @NotNull(message = "Asset is required.")
         CreateAssetsRequest asset,
+
+        @Valid
+        CreateAssetImageRequest images,
 
         @NotBlank(message = "Address of real estate is required.")
         @Size(max = 255, message = "Address of real estate exceeds limit.")

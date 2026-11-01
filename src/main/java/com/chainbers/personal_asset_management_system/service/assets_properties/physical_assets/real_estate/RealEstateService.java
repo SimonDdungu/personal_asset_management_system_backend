@@ -11,6 +11,7 @@ import com.chainbers.personal_asset_management_system.entity.asset_properties.ph
 import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.real_estate.RealEstate;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.repository.asset_properties.physical_assets.real_estate.RealEstateRepository;
+import com.chainbers.personal_asset_management_system.service.asset_files.images.AssetImageService;
 import com.chainbers.personal_asset_management_system.service.assets.AssetsService;
 import com.chainbers.personal_asset_management_system.specifications.asset_properties.physical_assets.electronics.ElectronicSpecification;
 import com.chainbers.personal_asset_management_system.specifications.asset_properties.physical_assets.real_estate.RealEstateSpecification;
@@ -31,6 +32,7 @@ import java.util.UUID;
 public class RealEstateService {
     private final RealEstateRepository realEstateRepository;
     private final AssetsService assetsService;
+    private final AssetImageService assetImageService;
 
     private RealEstate findRealEstate(UUID id, UUID userId){
         return realEstateRepository.findByIdAndAssetsUserId(id, userId)
@@ -70,6 +72,11 @@ public class RealEstateService {
         realEstate.setRentalIncomeCurrency(request.rentalIncomeCurrency());
 
         RealEstate savedRealEstate = realEstateRepository.save(realEstate);
+
+        if (request.images() != null && !request.images().images().isEmpty()) {
+            assetImageService.create(request.images(), asset);
+        }
+
         return toResponse(savedRealEstate);
     }
 
@@ -172,6 +179,7 @@ public class RealEstateService {
 
 
     private RealEstateResponse toResponse(RealEstate r){
+        Assets assets = r.getAssets();
         return new RealEstateResponse(
                 r.getId(),
                 r.getAssets().getId(),
@@ -191,6 +199,7 @@ public class RealEstateService {
                 r.getAssets().getCurrency(),
                 r.getAssets().getCurrentValue(),
                 r.getAssets().getCurrentValueUpdatedAt(),
+                assetImageService.getImagesByAssetId(assets.getId()),
                 r.getCreatedAt(),
                 r.getUpdatedAt()
 

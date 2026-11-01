@@ -1,5 +1,6 @@
 package com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics;
 
+import com.chainbers.personal_asset_management_system.dto.asset_files.images.CreateAssetImageRequest;
 import com.chainbers.personal_asset_management_system.dto.assets.CreateAssetsRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -11,6 +12,9 @@ import java.util.UUID;
 public record CreateElectronicsRequest(
         @Valid @NotNull
         CreateAssetsRequest asset,
+
+        @Valid
+        CreateAssetImageRequest images,
 
         @NotBlank(message = "Brand is required.") @Size(max = 255, message = "Brand exceeds limit.")
         String brand,

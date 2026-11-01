@@ -29,15 +29,16 @@ public class AssetImageService {
     private final SupabaseFileStorage fileStorage;
 
     @Transactional
-    public List<AssetImageResponse> create(CreateAssetImageRequest request, UUID userId){
+    public List<AssetImageResponse> create(CreateAssetImageRequest request,  Assets asset){
+        if (request.images() == null || request.images().isEmpty()) {
+            throw new IllegalArgumentException("No images available");
+        }
+
         List<MultipartFile> imageFiles = request.images();
 
         if (request.primaryImageIndex() != null && request.primaryImageIndex() >= imageFiles.size()) {
             throw new IllegalArgumentException("Primary image is invalid");
         }
-
-        Assets asset = assetsRepository.findByIdAndUserIdAndDeletedAtIsNull(request.assetId(), userId)
-                                        .orElseThrow(() -> new EntityNotFoundException("Asset not found"));
 
         AssetImageUpload upload = new AssetImageUpload();
         upload.setAssets(asset);
@@ -109,6 +110,24 @@ public class AssetImageService {
                 ))
                 .toList();
 
+    }
+
+    public List<AssetImageResponse> getImagesByAssetId(UUID assetId) {
+        List<AssetImageUpload> uploads = assetImageUploadRepository.findAllByAssetsId(assetId);
+
+        return uploads.stream()
+                .flatMap(upload -> assetImageRepository
+                        .findAllByAssetImageUploadId(upload.getId())
+                        .stream()
+                        .map(image -> new AssetImageResponse(
+                                image.getId(),
+                                assetId,
+                                fileStorage.signedUrl(image.getImagePath()),
+                                upload.getCaption(),
+                                image.isPrimary(),
+                                upload.getUploadedAt()
+                        )))
+                .toList();
     }
 
 

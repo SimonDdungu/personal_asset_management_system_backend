@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 public record CreateAssetImageRequest(
-        @NotNull(message = "Asset is required!")
-        UUID assetId,
-
         @NotEmpty(message = "At least one image is required!")
         List<@NotNull(message = "Image file is required!") MultipartFile> images,
 

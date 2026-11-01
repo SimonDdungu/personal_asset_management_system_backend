@@ -1,11 +1,13 @@
 package com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate;
 
+import com.chainbers.personal_asset_management_system.dto.asset_files.images.AssetImageResponse;
 import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.real_estate.PropertySizeUnit;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Currency;
+import java.util.List;
 import java.util.UUID;
 
 public record RealEstateResponse(
@@ -44,6 +46,8 @@ public record RealEstateResponse(
         BigDecimal currentValue,
 
         Instant currentValueUpdatedAt,
+
+        List<AssetImageResponse> images,
 
         Instant createdAt,
 

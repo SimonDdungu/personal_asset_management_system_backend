@@ -1,5 +1,6 @@
 package com.chainbers.personal_asset_management_system.service.assets_properties.physical_assets.electronics;
 
+import com.chainbers.personal_asset_management_system.dto.asset_files.images.CreateAssetImageRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.CreateElectronicsRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicSearchFilter;
 import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicsResponse;
@@ -8,6 +9,7 @@ import com.chainbers.personal_asset_management_system.entity.asset_properties.ph
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.repository.asset_properties.physical_assets.electronics.ElectronicsRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
+import com.chainbers.personal_asset_management_system.service.asset_files.images.AssetImageService;
 import com.chainbers.personal_asset_management_system.service.assets.AssetsService;
 import com.chainbers.personal_asset_management_system.specifications.asset_properties.physical_assets.electronics.ElectronicSpecification;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,7 +29,7 @@ import java.util.UUID;
 public class ElectronicService {
     private final ElectronicsRepository electronicsRepository;
     private final AssetsService assetsService;
-
+    private final AssetImageService assetImageService;
 
     private Electronics findElectronic(UUID id, UUID userId){
         return electronicsRepository.findByIdAndAssetsUserId(id, userId)
@@ -52,6 +54,11 @@ public class ElectronicService {
         electronics.setSerialNumber(request.serialNumber());
 
         Electronics savedElectronics = electronicsRepository.save(electronics);
+
+        if (request.images() != null && !request.images().images().isEmpty()) {
+            assetImageService.create(request.images(), asset);
+        }
+
         return toResponse(savedElectronics);
     }
 
@@ -96,6 +103,8 @@ public class ElectronicService {
 
 
     private ElectronicsResponse toResponse(Electronics e){
+        Assets assets = e.getAssets();
+
         return new ElectronicsResponse(
                 e.getId(),
                 e.getAssets().getId(),
@@ -108,6 +117,7 @@ public class ElectronicService {
                 e.getAssets().getCurrency(),
                 e.getAssets().getCurrentValue(),
                 e.getAssets().getCurrentValueUpdatedAt(),
+                assetImageService.getImagesByAssetId(assets.getId()),
                 e.getCreatedAt(),
                 e.getUpdatedAt()
         );
