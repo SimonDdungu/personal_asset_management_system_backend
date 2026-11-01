@@ -11,7 +11,6 @@ import com.chainbers.personal_asset_management_system.entity.assets.AssetCategor
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.entity.user.User;
 import com.chainbers.personal_asset_management_system.repository.asset_files.documents.AssetDocumentUploadRepository;
-import com.chainbers.personal_asset_management_system.repository.asset_files.images.AssetImageRepository;
 import com.chainbers.personal_asset_management_system.repository.asset_files.images.AssetImageUploadRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AcquisitionRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetCategoryRepository;
