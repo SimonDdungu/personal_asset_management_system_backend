@@ -20,14 +20,6 @@ public record UpdateElectronicsRequest(
         @Size(max = 255, message = "Color exceeds limit.")
         String color,
 
-        Integer year,
-
-        @NotNull(message = "Currency is required.")
-        Currency currency,
-
-        @NotNull(message = "Current value is required.")
-        @Digits(integer = 17, fraction = 2, message = "Current value exceeds limit.")
-        @DecimalMin(value = "0.00", message = "Current value cannot be negative.")
-        BigDecimal currentValue
+        Integer year
 ) {
 }

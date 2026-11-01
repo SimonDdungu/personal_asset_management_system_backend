@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "loans")
+@Table(name = "liability")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,12 +29,6 @@ public class Liability {
 
     @Column(nullable = false)
     private String creditor;
-
-    @Column(name = "amount_owed", nullable = false, precision = 19, scale = 2)
-    private BigDecimal amountOwed;
-
-    @Column(nullable = false, length = 3)
-    private String currency;
 
     @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;

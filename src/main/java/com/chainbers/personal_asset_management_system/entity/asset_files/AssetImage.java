@@ -21,20 +21,13 @@ public class AssetImage {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "asset_id", nullable = false)
-    private Assets assets;
+    @JoinColumn(name = "uploader_id", nullable = false)
+    private AssetImageUpload assetImageUpload;
 
     @Column(name = "image_path", nullable = false,  length = 2048)
     private String imagePath;
 
-    @Column
-    private String caption;
-
     @Column(name = "is_primary", nullable = false)
     private boolean isPrimary;
-
-    @CreationTimestamp
-    @Column(name = "uploaded_at", nullable = false)
-    private Instant uploadedAt;
 
 }

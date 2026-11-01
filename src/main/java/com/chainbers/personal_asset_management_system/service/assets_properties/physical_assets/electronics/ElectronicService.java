@@ -50,9 +50,6 @@ public class ElectronicService {
         electronics.setColor(request.color());
         electronics.setYear(request.year());
         electronics.setSerialNumber(request.serialNumber());
-        electronics.setCurrency(request.currency());
-        electronics.setCurrentValue(request.currentValue());
-        electronics.setCurrentValueUpdatedAt(Instant.now());
 
         Electronics savedElectronics = electronicsRepository.save(electronics);
         return toResponse(savedElectronics);
@@ -73,17 +70,6 @@ public class ElectronicService {
         electronics.setYear(request.year());
 
         electronics.setSerialNumber(request.serialNumber());
-
-        if(request.currency() != null) {
-            electronics.setCurrency(request.currency());
-        }
-
-        if(request.currentValue() != null && request.currentValue().compareTo(BigDecimal.ZERO) >= 0 ) {
-            electronics.setCurrentValue(request.currentValue());
-            electronics.setCurrentValueUpdatedAt(Instant.now());
-        }
-
-        electronics.setUpdatedAt(Instant.now());
 
         return toResponse(electronics);
     }
@@ -119,9 +105,9 @@ public class ElectronicService {
                 e.getColor(),
                 e.getSerialNumber(),
                 e.getYear(),
-                e.getCurrency(),
-                e.getCurrentValue(),
-                e.getCurrentValueUpdatedAt(),
+                e.getAssets().getCurrency(),
+                e.getAssets().getCurrentValue(),
+                e.getAssets().getCurrentValueUpdatedAt(),
                 e.getCreatedAt(),
                 e.getUpdatedAt()
         );

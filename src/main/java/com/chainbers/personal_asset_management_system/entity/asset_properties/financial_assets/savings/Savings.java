@@ -33,15 +33,6 @@ public class Savings {
     @Column(name = "account_number", nullable = false)
     private String accountNumber;
 
-    @Column(nullable = false, length = 3)
-    private String currency;
-
-    @Column(name = "current_balance", nullable = false, precision = 19, scale = 2)
-    private BigDecimal currentBalance;
-
-    @Column(name = "current_balance_updated_at", nullable = false)
-    private Instant currentBalanceUpdatedAt;
-
     @Column(name = "interest_rate", precision = 5, scale = 2)
     private BigDecimal interestRate;
 

@@ -47,15 +47,7 @@ public record CreateRealEstateRequest(
 
         @Digits(integer = 17, fraction = 2, message = "Rental income exceeds limit.")
         @DecimalMin(value = "0.00", message = "Rental income cannot be negative.")
-        BigDecimal rentalIncome,
-
-        @NotNull(message = "Currency is required.")
-        Currency currency,
-
-        @NotNull(message = "Current value is required.")
-        @Digits(integer = 17, fraction = 2, message = "Current value exceeds limit.")
-        @DecimalMin(value = "0.00", message = "Current value cannot be negative.")
-        BigDecimal currentValue
+        BigDecimal rentalIncome
 
 ) {
 }

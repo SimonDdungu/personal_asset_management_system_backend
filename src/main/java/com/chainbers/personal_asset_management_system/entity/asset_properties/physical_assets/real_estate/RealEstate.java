@@ -40,15 +40,6 @@ public class RealEstate {
     @Column(name = "rental_income_currency", length = 3)
     private Currency rentalIncomeCurrency;
 
-    @Column(nullable = false, length = 3)
-    private Currency currency;
-
-    @Column(name = "current_value", nullable = false, precision = 19, scale = 2)
-    private BigDecimal currentValue;
-
-    @Column(name = "current_value_updated_at", nullable = false)
-    private Instant currentValueUpdatedAt;
-
     @Column(name = "number_bedrooms")
     private Integer numberBedrooms;
 

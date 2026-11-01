@@ -26,15 +26,6 @@ public class PhysicalCash {
     @JoinColumn(name = "asset_id", nullable = false)
     private Assets assets;
 
-    @Column(name = "current_value", nullable = false, precision = 19, scale = 2)
-    private BigDecimal currentValue;
-
-    @Column(name = "current_value_updated_at", nullable = false)
-    private Instant currentValueUpdatedAt;
-
-    @Column(nullable = false, length = 3)
-    private String currency;
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

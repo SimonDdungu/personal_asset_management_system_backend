@@ -1,8 +1,9 @@
 package com.chainbers.personal_asset_management_system.dto.assets;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.UUID;
 
 public record UpdateAssetsRequest(
@@ -14,6 +15,12 @@ public record UpdateAssetsRequest(
 
         UUID assetCategoryId,
 
-        UUID acquisitionId
+        UUID acquisitionId,
+
+        Currency currency,
+
+        @Digits(integer = 17, fraction = 2, message = "Current value exceeds limit.")
+        @DecimalMin(value = "0.00", message = "Current value cannot be negative.")
+        BigDecimal currentValue
 ) {
 }

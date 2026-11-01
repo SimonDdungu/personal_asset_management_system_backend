@@ -4,6 +4,7 @@ import com.chainbers.personal_asset_management_system.entity.asset_properties.ph
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 import java.util.UUID;
 
 public class ElectronicSpecification {
@@ -52,21 +53,20 @@ public class ElectronicSpecification {
     public static Specification<Electronics> currentValueFrom(BigDecimal minValue) {
         return (root, query, cb) -> minValue == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("current_value"), minValue);
+                : cb.greaterThanOrEqualTo(root.get("assets").get("current_value"), minValue);
     }
 
     public static Specification<Electronics> currentValueTo(BigDecimal maxValue) {
         return (root, query, cb) -> maxValue == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("current_value"), maxValue);
+                : cb.lessThanOrEqualTo(root.get("assets").get("current_value"), maxValue);
     }
 
-    public static Specification<Electronics> currencyIs(String currency) {
-        return (root, query, cb) -> (currency == null || currency.isBlank())
+    public static Specification<Electronics> currencyIs(Currency currency) {
+        return (root, query, cb) -> (currency == null)
         ? null
-        : cb.equal(root.get("currency"),  currency.trim().toUpperCase());
+        : cb.equal(root.get("assets").get("currency"),  currency);
     }
-
 
     public static Specification<Electronics> belongsTo(UUID userId) {
         return (root, query, cb) -> cb.equal(root.get("assets").get("user").get("id"), userId);

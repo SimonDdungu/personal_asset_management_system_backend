@@ -33,12 +33,6 @@ public class Loans {
     @Column(name = "original_amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal originalAmount;
 
-    @Column(name = "outstanding_balance", nullable = false, precision = 19, scale = 2)
-    private BigDecimal outstandingBalance;
-
-    @Column(nullable = false, length = 3)
-    private String currency;
-
     @Column(name = "interest_rate", precision = 5, scale = 2)
     private BigDecimal interestRate;
 

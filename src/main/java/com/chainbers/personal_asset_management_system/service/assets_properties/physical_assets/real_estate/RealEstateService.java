@@ -69,10 +69,6 @@ public class RealEstateService {
         realEstate.setRentalIncome(request.rentalIncome());
         realEstate.setRentalIncomeCurrency(request.rentalIncomeCurrency());
 
-        realEstate.setCurrency(request.currency());
-        realEstate.setCurrentValue(request.currentValue());
-        realEstate.setCurrentValueUpdatedAt(Instant.now());
-
         RealEstate savedRealEstate = realEstateRepository.save(realEstate);
         return toResponse(savedRealEstate);
     }
@@ -125,15 +121,6 @@ public class RealEstateService {
 
         if(request.rentalIncomeCurrency() != null){
             realEstate.setRentalIncomeCurrency(request.rentalIncomeCurrency());
-        }
-
-        if(request.currency() != null){
-            realEstate.setCurrency(request.currency());
-        }
-
-        if(request.currentValue() != null && request.currentValue().compareTo(BigDecimal.ZERO) >= 0){
-            realEstate.setCurrentValue(request.currentValue());
-            realEstate.setCurrentValueUpdatedAt(Instant.now());
         }
 
         realEstate.setUpdatedAt(Instant.now());
@@ -201,9 +188,9 @@ public class RealEstateService {
                 r.getConstructionCompletionDate(),
                 r.getRentalIncomeCurrency(),
                 r.getRentalIncome(),
-                r.getCurrency(),
-                r.getCurrentValue(),
-                r.getCurrentValueUpdatedAt(),
+                r.getAssets().getCurrency(),
+                r.getAssets().getCurrentValue(),
+                r.getAssets().getCurrentValueUpdatedAt(),
                 r.getCreatedAt(),
                 r.getUpdatedAt()
 

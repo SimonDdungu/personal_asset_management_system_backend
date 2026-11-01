@@ -69,4 +69,13 @@ public class SupabaseFileStorage {
 
         return signedURL.startsWith("http") ? signedURL : url + "/storage/v1" + signedURL;
     }
+
+    public void delete(String path) {
+        restClient.delete()
+                .uri(url + "/storage/v1/object/{bucket}/{path}", bucket, path)
+                .header("apikey", serviceKey)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + serviceKey)
+                .retrieve()
+                .toBodilessEntity();
+    }
 }

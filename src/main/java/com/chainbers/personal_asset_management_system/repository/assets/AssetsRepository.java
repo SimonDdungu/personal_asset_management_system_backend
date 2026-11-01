@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface AssetsRepository extends JpaRepository<Assets, UUID>, JpaSpecificationExecutor<Assets> {
     List<Assets> findByUserId(UUID userId);
+    Optional<Assets> findByIdAndUserId(UUID id, UUID userId);
     Optional<Assets> findByIdAndUserIdAndDeletedAtIsNull(UUID id, UUID userId);
     Optional<Assets> findByIdAndUserIdAndDeletedAtIsNotNull(UUID id, UUID userId);
 }

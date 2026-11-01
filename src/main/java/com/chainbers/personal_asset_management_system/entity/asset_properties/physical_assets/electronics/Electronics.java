@@ -42,15 +42,6 @@ public class Electronics {
     @Column
     private String color;
 
-    @Column(nullable = false, length = 3)
-    private Currency currency;
-
-    @Column(name = "current_value", nullable = false, precision = 19, scale = 2)
-    private BigDecimal currentValue;
-
-    @Column(name = "current_value_updated_at", nullable = false)
-    private Instant currentValueUpdatedAt;
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;

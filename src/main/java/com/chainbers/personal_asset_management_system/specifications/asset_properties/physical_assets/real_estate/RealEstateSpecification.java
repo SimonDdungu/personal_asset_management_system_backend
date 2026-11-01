@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Currency;
 import java.util.UUID;
 
 public class RealEstateSpecification {
@@ -86,10 +87,10 @@ public class RealEstateSpecification {
                 : cb.lessThanOrEqualTo(root.get("construction_cost"), maxConstructionCost);
     }
 
-    public static Specification<RealEstate> constructionCurrencyIs(String constructionCurrency) {
-        return (root, query, cb) -> (constructionCurrency == null || constructionCurrency.isBlank())
+    public static Specification<RealEstate> constructionCurrencyIs(Currency constructionCurrency) {
+        return (root, query, cb) -> (constructionCurrency == null)
                 ? null
-                : cb.equal(root.get("construction_currency"),  constructionCurrency.trim().toUpperCase());
+                : cb.equal(root.get("construction_currency"),  constructionCurrency);
     }
 
     public static Specification<RealEstate> constructionCompletionDateFrom(LocalDate date) {
@@ -116,29 +117,29 @@ public class RealEstateSpecification {
                 : cb.lessThanOrEqualTo(root.get("rental_income"), maxRentalIncome);
     }
 
-    public static Specification<RealEstate> rentalCurrencyIs(String rentalCurrency) {
-        return (root, query, cb) -> (rentalCurrency == null || rentalCurrency.isBlank())
+    public static Specification<RealEstate> rentalCurrencyIs(Currency rentalCurrency) {
+        return (root, query, cb) -> (rentalCurrency == null)
                 ? null
-                : cb.equal(root.get("rental_income_currency"),  rentalCurrency.trim().toUpperCase());
+                : cb.equal(root.get("rental_income_currency"),  rentalCurrency);
     }
 
 
     public static Specification<RealEstate> currentValueFrom(BigDecimal minValue) {
         return (root, query, cb) -> minValue == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("current_value"), minValue);
+                : cb.greaterThanOrEqualTo(root.get("assets").get("current_value"), minValue);
     }
 
     public static Specification<RealEstate> currentValueTo(BigDecimal maxValue) {
         return (root, query, cb) -> maxValue == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("current_value"), maxValue);
+                : cb.lessThanOrEqualTo(root.get("assets").get("current_value"), maxValue);
     }
 
-    public static Specification<RealEstate> currencyIs(String currency) {
-        return (root, query, cb) -> (currency == null || currency.isBlank())
+    public static Specification<RealEstate> currencyIs(Currency currency) {
+        return (root, query, cb) -> (currency == null)
                 ? null
-                : cb.equal(root.get("currency"),  currency.trim().toUpperCase());
+                : cb.equal(root.get("assets").get("currency"),  currency);
     }
 
 

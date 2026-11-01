@@ -38,15 +38,6 @@ public class Vehicle {
     @Column(nullable = false)
     private String color;
 
-    @Column(name = "current_value", nullable = false, precision = 19, scale = 2)
-    private BigDecimal currentValue;
-
-    @Column(name = "current_value_updated_at", nullable = false)
-    private Instant currentValueUpdatedAt;
-
-    @Column(nullable = false, length = 3)
-    private String currency;
-
     @Column
     private Integer mileage;
 

@@ -24,7 +24,7 @@ public record RealEstateSearchFilter(
 
         String propertySizeUnit,
 
-        String constructionCostCurrency,
+        Currency constructionCostCurrency,
 
         BigDecimal minConstructionCost,
         BigDecimal maxConstructionCost,
@@ -32,12 +32,12 @@ public record RealEstateSearchFilter(
         LocalDate minConstructionCompletionDate,
         LocalDate maxConstructionCompletionDate,
 
-        String rentalIncomeCurrency,
+        Currency rentalIncomeCurrency,
 
         BigDecimal minRentalIncome,
         BigDecimal maxRentalIncome,
 
-        String currency,
+        Currency currency,
 
         BigDecimal minValue,
         BigDecimal maxValue

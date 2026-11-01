@@ -1,6 +1,7 @@
 package com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics;
 
 import java.math.BigDecimal;
+import java.util.Currency;
 
 public record ElectronicSearchFilter(
         String assetName,
@@ -17,7 +18,7 @@ public record ElectronicSearchFilter(
 
         Integer maxYear,
 
-        String currency,
+        Currency currency,
 
         BigDecimal minValue,
 

@@ -30,15 +30,6 @@ public class Insurance {
     @Column(nullable = false)
     private String provider;
 
-    @Column(nullable = false, length = 3)
-    private String currency;
-
-    @Column(name = "coverage_amount", nullable = false, precision = 19, scale = 2)
-    private BigDecimal coverageAmount;
-
-    @Column(name = "coverage_amount_updated_at", nullable = false)
-    private Instant coverageAmountUpdatedAt;
-
     @Column(name = "premium_amount", nullable = false, precision = 19, scale = 2)
     private BigDecimal premiumAmount;
 

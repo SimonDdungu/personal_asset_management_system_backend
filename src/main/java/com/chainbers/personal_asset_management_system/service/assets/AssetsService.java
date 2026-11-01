@@ -4,15 +4,21 @@ import com.chainbers.personal_asset_management_system.dto.assets.AssetSearchFilt
 import com.chainbers.personal_asset_management_system.dto.assets.CreateAssetsRequest;
 import com.chainbers.personal_asset_management_system.dto.assets.AssetsResponse;
 import com.chainbers.personal_asset_management_system.dto.assets.UpdateAssetsRequest;
+import com.chainbers.personal_asset_management_system.entity.asset_files.AssetImage;
+import com.chainbers.personal_asset_management_system.entity.asset_files.AssetImageUpload;
 import com.chainbers.personal_asset_management_system.entity.assets.Acquisition;
 import com.chainbers.personal_asset_management_system.entity.assets.AssetCategory;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.entity.user.User;
+import com.chainbers.personal_asset_management_system.repository.asset_files.AssetImageRepository;
+import com.chainbers.personal_asset_management_system.repository.asset_files.AssetImageUploadRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AcquisitionRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetCategoryRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
 import com.chainbers.personal_asset_management_system.repository.user.UserRepository;
+import com.chainbers.personal_asset_management_system.service.asset_files.images.AssetImageService;
 import com.chainbers.personal_asset_management_system.specifications.assets.AssetSpecification;
+import com.chainbers.personal_asset_management_system.storage.SupabaseFileStorage;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +27,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,6 +39,9 @@ public class AssetsService {
     private final AssetCategoryRepository assetCategoryRepository;
     private final UserRepository userRepository;
     private final AcquisitionRepository acquisitionRepository;
+    private final AssetImageRepository assetImageRepository;
+    private final AssetImageUploadRepository assetImageUploadRepository;
+    private final AssetImageService assetImageService;
 
     private AssetCategory findCategory(UUID id) {
         return assetCategoryRepository.findById(id)
@@ -75,6 +86,9 @@ public class AssetsService {
         assets.setAcquisition(findAcquisition(request.acquisitionId()));
         assets.setAssetCategory(findCategory(request.assetCategoryId()));
         assets.setDescription(request.description());
+        assets.setCurrency(request.currency());
+        assets.setCurrentValue(request.currentValue());
+        assets.setCurrentValueUpdatedAt(Instant.now());
 
         return assetsRepository.save(assets);
     }
@@ -83,12 +97,10 @@ public class AssetsService {
     public AssetsResponse update(UUID id, UpdateAssetsRequest request, UUID userId){
         Assets assets = findAsset(id, userId);
 
+        assets.setDescription(request.description());
+
         if(request.name() != null && !request.name().isBlank()){
             assets.setName(request.name());
-        }
-
-        if(request.description() != null && !request.description().isBlank()){
-            assets.setDescription(request.description());
         }
 
         if(request.acquisitionId() != null){
@@ -99,8 +111,18 @@ public class AssetsService {
             assets.setAssetCategory(findCategory(request.assetCategoryId()));
         }
 
-        return toResponse(assets);
+        if(request.currency() != null){
+            assets.setCurrency(request.currency());
+        }
 
+        if(request.currentValue() != null && request.currentValue().compareTo(BigDecimal.ZERO) >= 0 ) {
+            assets.setCurrentValue(request.currentValue());
+            assets.setCurrentValueUpdatedAt(Instant.now());
+        }
+
+        assets.setUpdatedAt(Instant.now());
+
+        return toResponse(assets);
     }
 
     @Transactional
@@ -118,7 +140,15 @@ public class AssetsService {
 
     @Transactional
     public void hardDeleteAsset(UUID id, UUID userId) {
-        Assets asset = findDeletedAsset(id, userId);
+        Assets asset = assetsRepository.findByIdAndUserId(id, userId)
+                            .orElseThrow(() -> new EntityNotFoundException("Asset not found"));
+
+        List<AssetImageUpload> uploads = assetImageUploadRepository.findAllByAssetsId(asset.getId());
+
+        for (AssetImageUpload upload : uploads) {
+            assetImageService.deleteUpload(upload.getId(), userId);
+        }
+
         assetsRepository.delete(asset);
     }
 
@@ -129,6 +159,9 @@ public class AssetsService {
                 AssetSpecification.hasAcquisition(filter.acquisitionId()),
                 AssetSpecification.hasCategory(filter.assetCategoryId()),
                 AssetSpecification.nameContains(filter.name()),
+                AssetSpecification.currencyIs(filter.currency()),
+                AssetSpecification.currentValueFrom(filter.minValue()),
+                AssetSpecification.currentValueTo(filter.maxValue()),
                 AssetSpecification.isNotDeleted()
         );
 
@@ -155,6 +188,9 @@ public class AssetsService {
                 a.getAssetCategory().getName(),
                 a.getAcquisition().getId(),
                 a.getAcquisition().getName(),
+                a.getCurrency(),
+                a.getCurrentValue(),
+                a.getCurrentValueUpdatedAt(),
                 a.getCreatedAt(),
                 a.getUpdatedAt());
     }
