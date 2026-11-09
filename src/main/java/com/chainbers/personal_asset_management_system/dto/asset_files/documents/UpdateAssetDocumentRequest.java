@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Size;
 import java.util.UUID;
 
 public record UpdateAssetDocumentRequest(
+        @Size(max = 100, message = "Document type cannot be more than 255 characters")
+        String assetDocumentTypeName,
+
          @Size(max = 255, message = "Caption cannot be more than 255 characters")
         String caption
 ) {

@@ -1,0 +1,1 @@
+ALTER TABLE asset_documents DROP COLUMN uploaded_at;

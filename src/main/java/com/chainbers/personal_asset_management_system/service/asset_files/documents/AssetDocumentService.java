@@ -34,9 +34,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AssetDocumentService {
-    private AssetDocumentUploadRepository assetDocumentUploadRepository;
-    private AssetDocumentRepository assetDocumentRepository;
-    private AssetDocumentTypeRepository assetDocumentTypeRepository;
+    private final AssetDocumentUploadRepository assetDocumentUploadRepository;
+    private final AssetDocumentRepository assetDocumentRepository;
+    private final AssetDocumentTypeRepository assetDocumentTypeRepository;
     private final SupabaseFileStorage fileStorage;
 
     @Transactional
@@ -45,7 +45,7 @@ public class AssetDocumentService {
             throw new IllegalArgumentException("No documents available");
         }
 
-        AssetDocumentType assetDocumentType = assetDocumentTypeRepository.findById(request.assetDocumentTypeId())
+        AssetDocumentType assetDocumentType = assetDocumentTypeRepository.findByName(request.assetDocumentTypeName())
                                                         .orElseThrow(() -> new EntityNotFoundException("Document type not found"));
 
         List<MultipartFile> documentFiles = request.documents();
@@ -100,6 +100,13 @@ public class AssetDocumentService {
 
         if (documents.isEmpty()) {
             throw new EntityNotFoundException("Document upload not found");
+        }
+
+        if(request.assetDocumentTypeName() != null && !request.assetDocumentTypeName().isBlank()){
+            AssetDocumentType assetDocumentType = assetDocumentTypeRepository.findByName(request.assetDocumentTypeName())
+                    .orElseThrow(() -> new EntityNotFoundException("Document type not found"));
+
+            upload.setAssetDocumentType(assetDocumentType);
         }
 
         upload.setCaption(request.caption());

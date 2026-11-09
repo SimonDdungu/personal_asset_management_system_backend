@@ -10,11 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 public record CreateAssetDocumentRequest(
-            @NotNull(message = "Asset is required!")
-            UUID assetId,
-
             @NotNull(message = "Document Type is required!")
-            UUID assetDocumentTypeId,
+            @Size(max = 100, message = "Document type cannot be more than 255 characters")
+            String assetDocumentTypeName,
 
             @NotEmpty(message = "At least one document is required!")
             List<@NotNull(message = "Document file is required!") MultipartFile> documents,

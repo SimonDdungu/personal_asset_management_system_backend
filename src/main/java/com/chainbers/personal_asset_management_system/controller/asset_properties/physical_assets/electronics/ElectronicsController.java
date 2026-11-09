@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -25,9 +26,12 @@ public class ElectronicsController {
         return electronicService.getById(id, userId);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ElectronicsResponse createElectronic(@Valid @RequestBody CreateElectronicsRequest request, @RequestParam UUID userId){
+    public ElectronicsResponse createElectronic(@Valid @ModelAttribute  CreateElectronicsRequest request, @RequestParam UUID userId){
+        System.out.println("CREATE ELECTRONIC CONTROLLER HIT");
+        System.out.println("Images object: " + request.images());
+        System.out.println("Image list: " + (request.images() == null ? null : request.images().images()));
         return electronicService.create(request, userId);
     }
 

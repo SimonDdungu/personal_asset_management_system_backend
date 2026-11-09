@@ -1,8 +1,10 @@
 package com.chainbers.personal_asset_management_system.config;
 
+import com.chainbers.personal_asset_management_system.entity.asset_files.documents.AssetDocumentType;
 import com.chainbers.personal_asset_management_system.entity.assets.Acquisition;
 import com.chainbers.personal_asset_management_system.entity.assets.AssetCategory;
 import com.chainbers.personal_asset_management_system.entity.assets.AssetType;
+import com.chainbers.personal_asset_management_system.repository.asset_files.documents.AssetDocumentTypeRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AcquisitionRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetCategoryRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetTypeRepository;
@@ -19,6 +21,7 @@ public class DataSeeder implements CommandLineRunner {
     private final AcquisitionRepository acquisitionRepository;
     private final AssetTypeRepository assetTypeRepository;
     private final AssetCategoryRepository assetCategoryRepository;
+    private final AssetDocumentTypeRepository assetDocumentTypeRepository;
 
     @Override
     @Transactional
@@ -26,6 +29,7 @@ public class DataSeeder implements CommandLineRunner {
         seedAcquisitions();
         seedAssetTypes();
         seedAssetCategories();
+        seedDocumentTypes();
     }
 
     private void seedAcquisitions() {
@@ -43,6 +47,33 @@ public class DataSeeder implements CommandLineRunner {
                 Acquisition acquisition = new Acquisition();
                 acquisition.setName(name);
                 acquisitionRepository.save(acquisition);
+            }
+        }
+    }
+
+    private void seedDocumentTypes() {
+        String[] documentTypes = {
+                "Receipt",
+                "Proof of Ownership",
+                "Purchase Document",
+                "Transaction Document",
+                "User Manual",
+                "Contract",
+                "Report",
+                "Invoice",
+                "Record",
+                "Financial Statement",
+                "Ledger",
+                "Journal",
+                "Appraisal",
+                "Other"
+        };
+
+        for (String documentType : documentTypes) {
+            if (!assetDocumentTypeRepository.existsByName(documentType)) {
+                AssetDocumentType assetDocumentType = new AssetDocumentType();
+                assetDocumentType.setName(documentType);
+                assetDocumentTypeRepository.save(assetDocumentType);
             }
         }
     }
@@ -83,6 +114,7 @@ public class DataSeeder implements CommandLineRunner {
                     "Vehicles",
                     "Electronics",
                     "Furniture",
+                    "Real estate",
                     "Machinery & Equipment",
                     "Other Physical Assets"
             };

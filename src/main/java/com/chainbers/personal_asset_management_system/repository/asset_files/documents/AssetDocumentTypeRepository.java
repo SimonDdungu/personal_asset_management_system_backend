@@ -4,8 +4,10 @@ import com.chainbers.personal_asset_management_system.entity.asset_files.documen
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface AssetDocumentTypeRepository extends JpaRepository<AssetDocumentType, UUID> {
-    List<AssetDocumentType> findByName(String name);
+    Optional<AssetDocumentType> findByName(String name);
+    boolean existsByName(String name);
 }
