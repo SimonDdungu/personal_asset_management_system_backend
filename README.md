@@ -5,7 +5,7 @@ A personal asset management system designed to help individuals **track, organiz
 The system allows users to keep records of different types of personal assets, including:
 ### Physical Assets
 * Land
-* Houses
+* Real Estate
 * Vehicles
 * Electronics
 * Furniture
@@ -40,6 +40,8 @@ The system also tracks **asset transactions**, such as purchases and sales, prov
 * Role-based access control for users and administrators
 
 The goal of the project is to provide a **structured and centralized way to understand and manage personal assets and valuable possessions**.
+
+*---- Final year project | work in progress -----*
 
 ## License
 Copyright © 2026 Simon Ddungu. All rights reserved.  
