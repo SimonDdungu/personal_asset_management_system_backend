@@ -1,9 +1,6 @@
 package com.chainbers.personal_asset_management_system.controller.asset_properties.physical_assets.electronics;
 
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.CreateElectronicsRequest;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicSearchFilter;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicsResponse;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.UpdateElectronicsRequest;
+import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.*;
 import com.chainbers.personal_asset_management_system.service.assets_properties.physical_assets.electronics.ElectronicService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +38,7 @@ public class ElectronicsController {
     }
 
     @GetMapping
-    public Page<ElectronicsResponse> searchElectronics(ElectronicSearchFilter filters, @RequestParam UUID userId, Pageable pageable) {
+    public Page<ElectronicSearchResponse> searchElectronics(ElectronicSearchFilter filters, @RequestParam UUID userId, Pageable pageable) {
         return electronicService.search(filters, userId, pageable);
     }
 

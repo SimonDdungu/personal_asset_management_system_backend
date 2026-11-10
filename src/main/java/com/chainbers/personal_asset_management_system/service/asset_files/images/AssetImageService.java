@@ -58,14 +58,13 @@ public class AssetImageService {
             image.setAssetImageUpload(upload);
             image.setImagePath(imagePath);
             image.setPrimary(request.primaryImageIndex() != null && request.primaryImageIndex() == i);
-
+            image.setOriginalFileName(file.getOriginalFilename());
             images.add(image);
         }
 
         List<AssetImageResponse> imageResponse = assetImageRepository.saveAll(images)
                                                         .stream()
                                                         .map(image -> new AssetImageResponse(
-                                                                image.getId(),
                                                                 fileStorage.signedUrl(image.getImagePath()),
                                                                 image.isPrimary()
                                                         ))
@@ -116,7 +115,6 @@ public class AssetImageService {
                 upload.getUpdatedAt(),
                 images.stream()
                         .map(image -> new AssetImageResponse(
-                                image.getId(),
                                 fileStorage.signedUrl(image.getImagePath()),
                                 image.isPrimary()
                         ))
@@ -133,7 +131,6 @@ public class AssetImageService {
                     List<AssetImageResponse> images = assetImageRepository.findAllByAssetImageUploadId(upload.getId())
                                                             .stream()
                                                             .map(image -> new AssetImageResponse(
-                                                                    image.getId(),
                                                                     fileStorage.signedUrl(image.getImagePath()),
                                                                     image.isPrimary()
                                                             ))
@@ -188,5 +185,15 @@ public class AssetImageService {
         assetImageRepository.deleteAll(images);
 
         assetImageUploadRepository.delete(upload);
+    }
+
+
+    public AssetImageResponse getPrimaryImageByAssetId(UUID assetId) {
+        return assetImageRepository.findFirstByAssetImageUploadAssetsIdAndIsPrimaryTrue(assetId)
+                .map(image -> new AssetImageResponse(
+                        fileStorage.signedUrl(image.getImagePath()),
+                        image.isPrimary()
+                ))
+                .orElse(null);
     }
 }

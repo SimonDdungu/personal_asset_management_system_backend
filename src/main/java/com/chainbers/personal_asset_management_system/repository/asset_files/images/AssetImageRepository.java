@@ -14,6 +14,8 @@ public interface AssetImageRepository extends JpaRepository<AssetImage, UUID> {
 
     Optional<AssetImage> findByIdAndAssetImageUploadId(UUID imageId, UUID uploadId);
 
+    Optional<AssetImage> findFirstByAssetImageUploadAssetsIdAndIsPrimaryTrue(UUID assetId);
+
     void deleteAllByAssetImageUploadId(UUID uploadId);
 
 }

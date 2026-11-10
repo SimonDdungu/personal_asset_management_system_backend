@@ -1,9 +1,6 @@
 package com.chainbers.personal_asset_management_system.controller.asset_properties.physical_assets.real_estate;
 
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.CreateRealEstateRequest;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.RealEstateResponse;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.RealEstateSearchFilter;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.UpdateRealEstateRequest;
+import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.*;
 import com.chainbers.personal_asset_management_system.service.assets_properties.physical_assets.real_estate.RealEstateService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +34,7 @@ public class RealEstateController {
     }
 
     @GetMapping
-    public Page<RealEstateResponse> searchRealEstate(RealEstateSearchFilter filters, @RequestParam UUID userId, Pageable pageable) {
+    public Page<RealEstateSearchResponse> searchRealEstate(RealEstateSearchFilter filters, @RequestParam UUID userId, Pageable pageable) {
         return realEstateService.search(filters, userId, pageable);
     }
 

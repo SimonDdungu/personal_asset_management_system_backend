@@ -6,6 +6,6 @@ import java.util.UUID;
 public record AssetDocumentResponse(
         UUID id,
 
-        String documentPath
+        String documentUrl
 ) {
 }

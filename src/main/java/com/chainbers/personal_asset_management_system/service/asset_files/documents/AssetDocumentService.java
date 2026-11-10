@@ -66,7 +66,7 @@ public class AssetDocumentService {
             AssetDocument document = new AssetDocument();
             document.setAssetDocumentUpload(upload);
             document.setDocumentPath(documentPath);
-
+            document.setOriginalFileName(file.getOriginalFilename());
             documents.add(document);
         }
 

@@ -1,9 +1,6 @@
 package com.chainbers.personal_asset_management_system.service.assets_properties.physical_assets.electronics;
 
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.CreateElectronicsRequest;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicSearchFilter;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.ElectronicsResponse;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.UpdateElectronicsRequest;
+import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.electronics.*;
 import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.electronics.Electronics;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.repository.asset_properties.physical_assets.electronics.ElectronicsRepository;
@@ -86,7 +83,7 @@ public class ElectronicService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ElectronicsResponse> search(ElectronicSearchFilter filters, UUID userId, Pageable pageable){
+    public Page<ElectronicSearchResponse> search(ElectronicSearchFilter filters, UUID userId, Pageable pageable){
         Specification<Electronics> specification = Specification.allOf(
                 ElectronicSpecification.belongsTo(userId),
                 ElectronicSpecification.nameContainsAsset(filters.assetName()),
@@ -102,7 +99,7 @@ public class ElectronicService {
                 ElectronicSpecification.isNotDeleted()
         );
 
-        return electronicsRepository.findAll(specification, pageable).map(this::toResponse);
+        return electronicsRepository.findAll(specification, pageable).map(this::toSearchResponse);
     }
 
 
@@ -125,6 +122,19 @@ public class ElectronicService {
                 assetDocumentService.getDocumentByAssetId(assets.getId()),
                 e.getCreatedAt(),
                 e.getUpdatedAt()
+        );
+    }
+
+    private ElectronicSearchResponse toSearchResponse(Electronics e){
+        Assets assets = e.getAssets();
+
+        return new ElectronicSearchResponse(
+                e.getId(),
+                e.getAssets().getId(),
+                e.getAssets().getName(),
+                assetImageService.getPrimaryImageByAssetId(assets.getId()),
+                e.getAssets().getCurrency(),
+                e.getAssets().getCurrentValue()
         );
     }
 }

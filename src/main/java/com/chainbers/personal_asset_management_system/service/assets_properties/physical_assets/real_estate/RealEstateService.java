@@ -1,9 +1,6 @@
 package com.chainbers.personal_asset_management_system.service.assets_properties.physical_assets.real_estate;
 
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.CreateRealEstateRequest;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.RealEstateResponse;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.RealEstateSearchFilter;
-import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.UpdateRealEstateRequest;
+import com.chainbers.personal_asset_management_system.dto.asset_properties.physical_assets.real_estate.*;
 import com.chainbers.personal_asset_management_system.entity.asset_properties.physical_assets.real_estate.RealEstate;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.repository.asset_properties.physical_assets.real_estate.RealEstateRepository;
@@ -138,7 +135,7 @@ public class RealEstateService {
 
 
     @Transactional(readOnly = true)
-    public Page<RealEstateResponse> search(RealEstateSearchFilter filters, UUID userId, Pageable pageable){
+    public Page<RealEstateSearchResponse> search(RealEstateSearchFilter filters, UUID userId, Pageable pageable){
         Specification<RealEstate> specification = Specification.allOf(
                 RealEstateSpecification.belongsTo(userId),
                 RealEstateSpecification.nameContainsAsset(filters.assetName()),
@@ -175,7 +172,7 @@ public class RealEstateService {
                 RealEstateSpecification.isNotDeleted()
         );
 
-        return realEstateRepository.findAll(specification, pageable).map(this::toResponse);
+        return realEstateRepository.findAll(specification, pageable).map(this::toSearchResponse);
     }
 
 
@@ -204,6 +201,22 @@ public class RealEstateService {
                 assetDocumentService.getDocumentByAssetId(assets.getId()),
                 r.getCreatedAt(),
                 r.getUpdatedAt()
+        );
+    }
+
+    private RealEstateSearchResponse toSearchResponse(RealEstate r){
+        Assets assets = r.getAssets();
+        return new RealEstateSearchResponse(
+                r.getId(),
+                r.getAssets().getId(),
+                r.getAssets().getName(),
+                r.getAddress(),
+                r.getNumberBedrooms(),
+                r.getNumberBathrooms(),
+                r.getNumberUnits(),
+                assetImageService.getPrimaryImageByAssetId(assets.getId()),
+                r.getAssets().getCurrency(),
+                r.getAssets().getCurrentValue()
         );
     }
 

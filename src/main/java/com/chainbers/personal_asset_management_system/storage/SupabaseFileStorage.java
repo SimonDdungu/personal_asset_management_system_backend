@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.net.URI;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import java.util.Map;
 import java.util.UUID;
 
@@ -39,7 +42,7 @@ public class SupabaseFileStorage {
         String path = folder + "/" + UUID.randomUUID();
 
         restClient.post()
-                .uri(url + "/storage/v1/object/{bucket}/{path}", bucket, path)
+                .uri(objectUri(null, path))
                 .header("apikey", serviceKey)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + serviceKey)
                 .contentType(MediaType.parseMediaType(contentType))
@@ -53,7 +56,7 @@ public class SupabaseFileStorage {
     public String signedUrl(String path) {
 
         Map<?, ?> response = restClient.post()
-                .uri(url + "/storage/v1/object/sign/{bucket}/{path}", bucket, path)
+                .uri(objectUri("sign", path))
                 .header("apikey", serviceKey)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + serviceKey)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -72,10 +75,29 @@ public class SupabaseFileStorage {
 
     public void delete(String path) {
         restClient.delete()
-                .uri(url + "/storage/v1/object/{bucket}/{path}", bucket, path)
+                .uri(objectUri("sign", path))
                 .header("apikey", serviceKey)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + serviceKey)
                 .retrieve()
                 .toBodilessEntity();
+    }
+
+    private URI objectUri(String operation, String path) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url)
+                                                        .path("/storage/v1/object");
+
+        if (operation != null && !operation.isBlank()) {
+            builder.pathSegment(operation);
+        }
+
+        builder.pathSegment(bucket);
+
+        for (String segment : path.split("/")) {
+            builder.pathSegment(segment);
+        }
+
+        return builder.build()
+                .encode()
+                .toUri();
     }
 }

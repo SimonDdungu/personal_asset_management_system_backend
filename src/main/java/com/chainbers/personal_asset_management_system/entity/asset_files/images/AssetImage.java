@@ -24,6 +24,10 @@ public class AssetImage {
     @Column(name = "image_path", nullable = false,  length = 2048)
     private String imagePath;
 
+    @Column(name = "original_filename", nullable = false)
+    private String originalFileName;
+
+
     @Column(name = "is_primary", nullable = false)
     private boolean isPrimary;
 

@@ -24,4 +24,7 @@ public class AssetDocument {
     @Column(name = "document_path", nullable = false,  length = 2048)
     private String documentPath;
 
+    @Column(name = "original_filename", nullable = false)
+    private String originalFileName;
+
 }

@@ -4,8 +4,6 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record AssetImageResponse(
-        UUID id,
-
         String imageUrl,
 
         boolean isPrimary
