@@ -4,7 +4,11 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record AssetImageResponse(
+        UUID id,
+
         String imageUrl,
+
+        String originalFileName,
 
         boolean isPrimary
 ) {

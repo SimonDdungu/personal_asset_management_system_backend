@@ -8,12 +8,14 @@ import com.chainbers.personal_asset_management_system.entity.asset_files.documen
 import com.chainbers.personal_asset_management_system.entity.asset_files.images.AssetImageUpload;
 import com.chainbers.personal_asset_management_system.entity.assets.Acquisition;
 import com.chainbers.personal_asset_management_system.entity.assets.AssetCategory;
+import com.chainbers.personal_asset_management_system.entity.assets.AssetType;
 import com.chainbers.personal_asset_management_system.entity.assets.Assets;
 import com.chainbers.personal_asset_management_system.entity.user.User;
 import com.chainbers.personal_asset_management_system.repository.asset_files.documents.AssetDocumentUploadRepository;
 import com.chainbers.personal_asset_management_system.repository.asset_files.images.AssetImageUploadRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AcquisitionRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetCategoryRepository;
+import com.chainbers.personal_asset_management_system.repository.assets.AssetTypeRepository;
 import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
 import com.chainbers.personal_asset_management_system.repository.user.UserRepository;
 import com.chainbers.personal_asset_management_system.service.asset_files.documents.AssetDocumentService;
@@ -37,6 +39,7 @@ import java.util.UUID;
 public class AssetsService {
     private final AssetsRepository assetsRepository;
     private final AssetCategoryRepository assetCategoryRepository;
+    private final AssetTypeRepository assetTypeRepository;
     private final UserRepository userRepository;
     private final AcquisitionRepository acquisitionRepository;
     private final AssetImageUploadRepository assetImageUploadRepository;
@@ -44,14 +47,19 @@ public class AssetsService {
     private final AssetImageService assetImageService;
     private final AssetDocumentService assetDocumentService;
 
-    private AssetCategory findCategory(UUID id) {
-        return assetCategoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Asset category not found: " + id));
+    private AssetCategory findCategory(String category) {
+        return assetCategoryRepository.findByName(category)
+                .orElseThrow(() -> new EntityNotFoundException("Asset category not found: " + category));
     }
 
-    private Acquisition findAcquisition(UUID id){
-        return acquisitionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(("Acquisition not found: " + id)));
+    private AssetType findAssetType(String assetType) {
+        return assetTypeRepository.findByName(assetType)
+                .orElseThrow(() -> new EntityNotFoundException("Asset type not found: " + assetType));
+    }
+
+    private Acquisition findAcquisition(String acquisition){
+        return acquisitionRepository.findByName(acquisition)
+                .orElseThrow(() -> new EntityNotFoundException(("Acquisition not found: " + acquisition)));
     }
 
     private User findUser(UUID id){
@@ -84,8 +92,9 @@ public class AssetsService {
         Assets assets = new Assets();
         assets.setUser(findUser(userId));
         assets.setName(request.name());
-        assets.setAcquisition(findAcquisition(request.acquisitionId()));
-        assets.setAssetCategory(findCategory(request.assetCategoryId()));
+        assets.setAssetType(findAssetType(request.assetType()));
+        assets.setAcquisition(findAcquisition(request.acquisition()));
+        assets.setAssetCategory(findCategory(request.assetCategory()));
         assets.setDescription(request.description());
         assets.setCurrency(request.currency());
         assets.setCurrentValue(request.currentValue());
@@ -104,12 +113,12 @@ public class AssetsService {
             assets.setName(request.name());
         }
 
-        if(request.acquisitionId() != null){
-            assets.setAcquisition(findAcquisition(request.acquisitionId()));
+        if(request.acquisition() != null){
+            assets.setAcquisition(findAcquisition(request.acquisition()));
         }
 
-        if(request.assetCategoryId() != null){
-            assets.setAssetCategory(findCategory(request.assetCategoryId()));
+        if(request.assetCategory() != null){
+            assets.setAssetCategory(findCategory(request.assetCategory()));
         }
 
         if(request.currency() != null){
@@ -190,9 +199,8 @@ public class AssetsService {
                 a.getId(),
                 a.getName(),
                 a.getDescription(),
-                a.getAssetCategory().getId(),
+                a.getAssetType().getName(),
                 a.getAssetCategory().getName(),
-                a.getAcquisition().getId(),
                 a.getAcquisition().getName(),
                 a.getCurrency(),
                 a.getCurrentValue(),

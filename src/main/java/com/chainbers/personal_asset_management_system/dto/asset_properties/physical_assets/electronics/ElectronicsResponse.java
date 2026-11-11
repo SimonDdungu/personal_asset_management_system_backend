@@ -17,6 +17,10 @@ public record ElectronicsResponse(
 
         String assetName,
 
+        String assetType,
+
+        String assetCategory,
+
         String brand,
 
         String model,

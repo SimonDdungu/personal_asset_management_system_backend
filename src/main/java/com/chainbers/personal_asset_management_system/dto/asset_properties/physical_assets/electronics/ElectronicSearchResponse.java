@@ -15,6 +15,10 @@ public record ElectronicSearchResponse(
 
         String assetName,
 
+        String assetType,
+
+        String assetCategory,
+
         AssetImageResponse image,
 
         Currency currency,

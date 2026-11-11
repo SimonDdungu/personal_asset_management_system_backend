@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,9 +23,9 @@ public class RealEstateController {
         return realEstateService.getById(id, userId);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public RealEstateResponse createRealEstate(@Valid @RequestBody CreateRealEstateRequest request, @RequestParam UUID userId){
+    public RealEstateResponse createRealEstate(@Valid @ModelAttribute CreateRealEstateRequest request, @RequestParam UUID userId){
         return realEstateService.create(request, userId);
     }
 

@@ -74,7 +74,8 @@ public class AssetDocumentService {
                                                                         .stream()
                                                                         .map(document -> new AssetDocumentResponse(
                                                                                 document.getId(),
-                                                                                fileStorage.signedUrl(document.getDocumentPath())
+                                                                                fileStorage.signedUrl(document.getDocumentPath()),
+                                                                                document.getOriginalFileName()
                                                                         ))
                                                                         .toList();
 
@@ -126,7 +127,8 @@ public class AssetDocumentService {
                 documents.stream()
                         .map(document -> new AssetDocumentResponse(
                                 document.getId(),
-                                fileStorage.signedUrl(document.getDocumentPath())
+                                fileStorage.signedUrl(document.getDocumentPath()),
+                                document.getOriginalFileName()
                         ))
                         .toList()
         );
@@ -142,7 +144,8 @@ public class AssetDocumentService {
                             .stream()
                             .map(document -> new AssetDocumentResponse(
                                     document.getId(),
-                                    fileStorage.signedUrl(document.getDocumentPath())
+                                    fileStorage.signedUrl(document.getDocumentPath()),
+                                    document.getOriginalFileName()
                             ))
                             .toList();
 

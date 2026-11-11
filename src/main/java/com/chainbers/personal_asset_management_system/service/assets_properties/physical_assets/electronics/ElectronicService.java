@@ -110,6 +110,8 @@ public class ElectronicService {
                 e.getId(),
                 e.getAssets().getId(),
                 e.getAssets().getName(),
+                e.getAssets().getAssetType().getName(),
+                e.getAssets().getAssetCategory().getName(),
                 e.getBrand(),
                 e.getModel(),
                 e.getColor(),
@@ -132,6 +134,8 @@ public class ElectronicService {
                 e.getId(),
                 e.getAssets().getId(),
                 e.getAssets().getName(),
+                e.getAssets().getAssetType().getName(),
+                e.getAssets().getAssetCategory().getName(),
                 assetImageService.getPrimaryImageByAssetId(assets.getId()),
                 e.getAssets().getCurrency(),
                 e.getAssets().getCurrentValue()

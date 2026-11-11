@@ -13,9 +13,9 @@ public record UpdateAssetsRequest(
         @Size(max = 255, message = "Asset description exceeds limit.")
         String description,
 
-        UUID assetCategoryId,
+        String assetCategory,
 
-        UUID acquisitionId,
+        String acquisition,
 
         Currency currency,
 

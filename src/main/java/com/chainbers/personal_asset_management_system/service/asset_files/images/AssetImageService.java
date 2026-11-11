@@ -65,7 +65,9 @@ public class AssetImageService {
         List<AssetImageResponse> imageResponse = assetImageRepository.saveAll(images)
                                                         .stream()
                                                         .map(image -> new AssetImageResponse(
+                                                                image.getId(),
                                                                 fileStorage.signedUrl(image.getImagePath()),
+                                                                image.getOriginalFileName(),
                                                                 image.isPrimary()
                                                         ))
                                                         .toList();
@@ -115,7 +117,9 @@ public class AssetImageService {
                 upload.getUpdatedAt(),
                 images.stream()
                         .map(image -> new AssetImageResponse(
+                                image.getId(),
                                 fileStorage.signedUrl(image.getImagePath()),
+                                image.getOriginalFileName(),
                                 image.isPrimary()
                         ))
                         .toList()
@@ -131,7 +135,9 @@ public class AssetImageService {
                     List<AssetImageResponse> images = assetImageRepository.findAllByAssetImageUploadId(upload.getId())
                                                             .stream()
                                                             .map(image -> new AssetImageResponse(
+                                                                    image.getId(),
                                                                     fileStorage.signedUrl(image.getImagePath()),
+                                                                    image.getOriginalFileName(),
                                                                     image.isPrimary()
                                                             ))
                                                             .toList();
@@ -191,7 +197,9 @@ public class AssetImageService {
     public AssetImageResponse getPrimaryImageByAssetId(UUID assetId) {
         return assetImageRepository.findFirstByAssetImageUploadAssetsIdAndIsPrimaryTrue(assetId)
                 .map(image -> new AssetImageResponse(
+                        image.getId(),
                         fileStorage.signedUrl(image.getImagePath()),
+                        image.getOriginalFileName(),
                         image.isPrimary()
                 ))
                 .orElse(null);

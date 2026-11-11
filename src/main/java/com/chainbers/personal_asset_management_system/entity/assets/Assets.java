@@ -51,6 +51,10 @@ public class Assets {
     private AssetCategory assetCategory;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "asset_type", nullable = false)
+    private AssetType assetType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "acquisition_id", nullable = false)
     private Acquisition acquisition;
 

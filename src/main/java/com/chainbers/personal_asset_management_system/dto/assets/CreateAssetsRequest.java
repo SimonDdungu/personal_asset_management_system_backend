@@ -14,11 +14,14 @@ public record CreateAssetsRequest(
         @Size(max = 255, message = "Asset description exceeds limit.")
         String description,
 
+        @NotNull(message = "Asset Type is required!")
+        String assetType,
+
         @NotNull(message = "Asset Category is required!")
-        UUID assetCategoryId,
+        String assetCategory,
 
         @NotNull(message = "Acquisition is required!")
-        UUID acquisitionId,
+        String acquisition,
 
         @NotNull(message = "Currency is required.")
         Currency currency,

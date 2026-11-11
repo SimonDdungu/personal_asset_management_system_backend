@@ -214,6 +214,8 @@ public class RealEstateService {
                 r.getNumberBedrooms(),
                 r.getNumberBathrooms(),
                 r.getNumberUnits(),
+                r.getPropertySize(),
+                r.getPropertySizeUnit(),
                 assetImageService.getPrimaryImageByAssetId(assets.getId()),
                 r.getAssets().getCurrency(),
                 r.getAssets().getCurrentValue()

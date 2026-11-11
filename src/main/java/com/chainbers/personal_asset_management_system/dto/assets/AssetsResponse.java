@@ -12,11 +12,9 @@ public record AssetsResponse(
 
         String description,
 
-        UUID assetCategoryId,
+        String assetType,
 
         String assetCategoryName,
-
-        UUID acquisitionId,
 
         String acquisitionName,
 

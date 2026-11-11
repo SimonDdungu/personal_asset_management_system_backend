@@ -1,0 +1,1 @@
+ALTER TABLE assets ALTER COLUMN asset_type SET NOT NULL;
