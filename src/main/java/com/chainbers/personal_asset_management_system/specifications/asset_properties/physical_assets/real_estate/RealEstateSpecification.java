@@ -24,116 +24,116 @@ public class RealEstateSpecification {
     public static Specification<RealEstate> bedroomsFrom(Integer minBedrooms) {
         return (root, query, cb) -> minBedrooms == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("number_bedrooms"), minBedrooms);
+                : cb.greaterThanOrEqualTo(root.get("numberBedrooms"), minBedrooms);
     }
 
     public static Specification<RealEstate> bedroomsTo(Integer maxBedrooms) {
         return (root, query, cb) -> maxBedrooms == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("number_bedrooms"), maxBedrooms);
+                : cb.lessThanOrEqualTo(root.get("numberBedrooms"), maxBedrooms);
     }
 
     public static Specification<RealEstate> bathroomsFrom(Integer minBathrooms) {
         return (root, query, cb) -> minBathrooms == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("number_bathrooms"), minBathrooms);
+                : cb.greaterThanOrEqualTo(root.get("numberBathrooms"), minBathrooms);
     }
 
     public static Specification<RealEstate> bathroomsTo(Integer maxBathrooms) {
         return (root, query, cb) -> maxBathrooms == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("number_bathrooms"), maxBathrooms);
+                : cb.lessThanOrEqualTo(root.get("numberBathrooms"), maxBathrooms);
     }
 
     public static Specification<RealEstate> numberUnitsFrom(Integer minUnits) {
         return (root, query, cb) -> minUnits == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("number_units"), minUnits);
+                : cb.greaterThanOrEqualTo(root.get("numberUnits"), minUnits);
     }
 
     public static Specification<RealEstate> numberUnitsTo(Integer maxUnits) {
         return (root, query, cb) -> maxUnits == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("number_units"), maxUnits);
+                : cb.lessThanOrEqualTo(root.get("numberUnits"), maxUnits);
     }
 
     public static Specification<RealEstate> propertySizeFrom(BigDecimal minPropertySize) {
         return (root, query, cb) -> minPropertySize == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("property_size"), minPropertySize);
+                : cb.greaterThanOrEqualTo(root.get("propertySize"), minPropertySize);
     }
 
     public static Specification<RealEstate> propertySizeTo(BigDecimal maxPropertySize) {
         return (root, query, cb) -> maxPropertySize == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("property_size"), maxPropertySize);
+                : cb.lessThanOrEqualTo(root.get("propertySize"), maxPropertySize);
     }
 
     public static Specification<RealEstate> propertySizeUnit(String propertySizeUnit) {
         return (root, query, cb) -> (propertySizeUnit == null || propertySizeUnit.isBlank())
                 ? null
-                : cb.equal(root.get("property_size_unit"),  propertySizeUnit.trim().toUpperCase());
+                : cb.equal(root.get("propertySizeUnit"),  propertySizeUnit.trim().toUpperCase());
     }
 
     public static Specification<RealEstate> constructionCostFrom(BigDecimal minConstructionCost) {
         return (root, query, cb) -> minConstructionCost == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("construction_cost"), minConstructionCost);
+                : cb.greaterThanOrEqualTo(root.get("constructionCost"), minConstructionCost);
     }
 
     public static Specification<RealEstate> constructionCostTo(BigDecimal maxConstructionCost) {
         return (root, query, cb) -> maxConstructionCost == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("construction_cost"), maxConstructionCost);
+                : cb.lessThanOrEqualTo(root.get("constructionCost"), maxConstructionCost);
     }
 
     public static Specification<RealEstate> constructionCurrencyIs(Currency constructionCurrency) {
         return (root, query, cb) -> (constructionCurrency == null)
                 ? null
-                : cb.equal(root.get("construction_currency"),  constructionCurrency);
+                : cb.equal(root.get("constructionCurrency"),  constructionCurrency);
     }
 
     public static Specification<RealEstate> constructionCompletionDateFrom(LocalDate date) {
         return (root, query, cb) -> date == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("construction_completion_date"), date);
+                : cb.greaterThanOrEqualTo(root.get("constructionCompletionDate"), date);
     }
 
     public static Specification<RealEstate> constructionCompletionDateTo(LocalDate date) {
         return (root, query, cb) ->  date == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("construction_completion_date"), date);
+                : cb.lessThanOrEqualTo(root.get("constructionCompletionDate"), date);
     }
 
     public static Specification<RealEstate> rentalIncomeFrom(BigDecimal minRentalIncome) {
         return (root, query, cb) -> minRentalIncome == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("rental_income"), minRentalIncome);
+                : cb.greaterThanOrEqualTo(root.get("rentalIncome"), minRentalIncome);
     }
 
     public static Specification<RealEstate> rentalIncomeTo(BigDecimal maxRentalIncome) {
         return (root, query, cb) -> maxRentalIncome == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("rental_income"), maxRentalIncome);
+                : cb.lessThanOrEqualTo(root.get("rentalIncome"), maxRentalIncome);
     }
 
     public static Specification<RealEstate> rentalCurrencyIs(Currency rentalCurrency) {
         return (root, query, cb) -> (rentalCurrency == null)
                 ? null
-                : cb.equal(root.get("rental_income_currency"),  rentalCurrency);
+                : cb.equal(root.get("rentalIncomeCurrency"),  rentalCurrency);
     }
 
 
     public static Specification<RealEstate> currentValueFrom(BigDecimal minValue) {
         return (root, query, cb) -> minValue == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("assets").get("current_value"), minValue);
+                : cb.greaterThanOrEqualTo(root.get("assets").get("currentValue"), minValue);
     }
 
     public static Specification<RealEstate> currentValueTo(BigDecimal maxValue) {
         return (root, query, cb) -> maxValue == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("assets").get("current_value"), maxValue);
+                : cb.lessThanOrEqualTo(root.get("assets").get("currentValue"), maxValue);
     }
 
     public static Specification<RealEstate> currencyIs(Currency currency) {

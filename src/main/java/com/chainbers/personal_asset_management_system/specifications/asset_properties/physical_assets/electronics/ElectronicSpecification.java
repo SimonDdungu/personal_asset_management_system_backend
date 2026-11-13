@@ -29,7 +29,7 @@ public class ElectronicSpecification {
     public static Specification<Electronics> nameContainsSerialNumber(String serialNumber){
         return (root, query, cb) -> (serialNumber == null || serialNumber.isBlank())
                 ? null
-                : cb.like(cb.lower(root.get("serial_number")), "%" + serialNumber.trim().toLowerCase() + "%");
+                : cb.like(cb.lower(root.get("serialNumber")), "%" + serialNumber.trim().toLowerCase() + "%");
     }
 
     public static Specification<Electronics> nameContainsColor(String color){
@@ -53,13 +53,13 @@ public class ElectronicSpecification {
     public static Specification<Electronics> currentValueFrom(BigDecimal minValue) {
         return (root, query, cb) -> minValue == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("assets").get("current_value"), minValue);
+                : cb.greaterThanOrEqualTo(root.get("assets").get("currentValue"), minValue);
     }
 
     public static Specification<Electronics> currentValueTo(BigDecimal maxValue) {
         return (root, query, cb) -> maxValue == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("assets").get("current_value"), maxValue);
+                : cb.lessThanOrEqualTo(root.get("assets").get("currentValue"), maxValue);
     }
 
     public static Specification<Electronics> currencyIs(Currency currency) {
