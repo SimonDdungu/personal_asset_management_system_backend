@@ -5,9 +5,6 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 public record UpdateAssetImageRequest(
-        @Size(max = 255, message = "Caption exceeds limit.")
-        String caption,
-
         @PositiveOrZero(message = "Primary image is invalid")
         Integer primaryImageIndex
 ) {

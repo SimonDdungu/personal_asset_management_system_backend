@@ -29,9 +29,6 @@ public class AssetDocumentUpload {
     @JoinColumn(name = "document_type_id", nullable = false)
     private AssetDocumentType assetDocumentType;
 
-    @Column
-    private String caption;
-
     @CreationTimestamp
     @Column(name = "uploaded_at", nullable = false)
     private Instant uploadedAt;

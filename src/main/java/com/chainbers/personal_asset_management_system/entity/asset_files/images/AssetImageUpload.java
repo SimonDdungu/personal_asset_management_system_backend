@@ -27,9 +27,6 @@ public class AssetImageUpload {
     @JoinColumn(name = "asset_id", nullable = false)
     private Assets assets;
 
-    @Column
-    private String caption;
-
     @CreationTimestamp
     @Column(name = "uploaded_at", nullable = false)
     private Instant uploadedAt;

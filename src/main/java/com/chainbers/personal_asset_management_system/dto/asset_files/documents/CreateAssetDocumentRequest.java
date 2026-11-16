@@ -15,9 +15,7 @@ public record CreateAssetDocumentRequest(
             String assetDocumentTypeName,
 
             @NotEmpty(message = "At least one document is required!")
-            List<@NotNull(message = "Document file is required!") MultipartFile> documents,
+            List<@NotNull(message = "Document file is required!") MultipartFile> documents
 
-            @Size(max = 255, message = "Caption exceeds limit.")
-            String caption
 ) {
 }

@@ -10,9 +10,6 @@ public record CreateAssetImageRequest(
         @NotEmpty(message = "At least one image is required!")
         List<@NotNull(message = "Image file is required!") MultipartFile> images,
 
-        @Size(max = 255, message = "Caption exceeds limit.")
-        String caption,
-
         @PositiveOrZero(message = "Primary image is invalid")
         Integer primaryImageIndex
         ) {

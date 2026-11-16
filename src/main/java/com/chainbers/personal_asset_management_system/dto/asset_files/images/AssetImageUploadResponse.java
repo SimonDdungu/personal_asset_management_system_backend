@@ -7,7 +7,6 @@ import java.util.UUID;
 public record AssetImageUploadResponse(
         UUID id,
         UUID assetId,
-        String caption,
         Instant uploadedAt,
         Instant updatedAt,
         List<AssetImageResponse> images

@@ -9,7 +9,6 @@ public record AssetDocumentUploadResponse(
         UUID assetId,
         UUID assetDocumentTypeId,
         String assetDocumentTypeName,
-        String caption,
         Instant uploadedAt,
         Instant updatedAt,
         List<AssetDocumentResponse> documents

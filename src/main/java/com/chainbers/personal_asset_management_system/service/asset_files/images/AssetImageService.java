@@ -43,7 +43,6 @@ public class AssetImageService {
 
         AssetImageUpload upload = new AssetImageUpload();
         upload.setAssets(asset);
-        upload.setCaption(request.caption());
         upload = assetImageUploadRepository.save(upload);
 
 
@@ -75,7 +74,6 @@ public class AssetImageService {
         return new AssetImageUploadResponse(
                 upload.getId(),
                 asset.getId(),
-                upload.getCaption(),
                 upload.getUploadedAt(),
                 upload.getUpdatedAt(),
                 imageResponse
@@ -97,8 +95,6 @@ public class AssetImageService {
             throw new IllegalArgumentException("Primary image is invalid");
         }
 
-        upload.setCaption(request.caption());
-
         if (request.primaryImageIndex() != null) {
             for (int i = 0; i < images.size(); i++) {
                 images.get(i).setPrimary(i == request.primaryImageIndex());
@@ -112,7 +108,6 @@ public class AssetImageService {
         return new AssetImageUploadResponse(
                 upload.getId(),
                 upload.getAssets().getId(),
-                upload.getCaption(),
                 upload.getUploadedAt(),
                 upload.getUpdatedAt(),
                 images.stream()
@@ -145,7 +140,6 @@ public class AssetImageService {
                     return new AssetImageUploadResponse(
                             upload.getId(),
                             assetId,
-                            upload.getCaption(),
                             upload.getUploadedAt(),
                             upload.getUpdatedAt(),
                             images

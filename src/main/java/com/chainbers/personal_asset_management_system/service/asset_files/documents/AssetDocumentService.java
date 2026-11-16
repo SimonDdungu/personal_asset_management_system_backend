@@ -52,7 +52,6 @@ public class AssetDocumentService {
 
         AssetDocumentUpload upload = new AssetDocumentUpload();
         upload.setAssets(assets);
-        upload.setCaption(request.caption());
         upload.setAssetDocumentType(assetDocumentType);
         upload = assetDocumentUploadRepository.save(upload);
 
@@ -84,7 +83,6 @@ public class AssetDocumentService {
                 assets.getId(),
                 upload.getAssetDocumentType().getId(),
                 upload.getAssetDocumentType().getName(),
-                upload.getCaption(),
                 upload.getUploadedAt(),
                 upload.getUpdatedAt(),
                 documentResponse
@@ -110,8 +108,6 @@ public class AssetDocumentService {
             upload.setAssetDocumentType(assetDocumentType);
         }
 
-        upload.setCaption(request.caption());
-
         upload.setUpdatedAt(Instant.now());
 
         assetDocumentUploadRepository.save(upload);
@@ -121,7 +117,6 @@ public class AssetDocumentService {
                 upload.getAssets().getId(),
                 upload.getAssetDocumentType().getId(),
                 upload.getAssetDocumentType().getName(),
-                upload.getCaption(),
                 upload.getUploadedAt(),
                 upload.getUpdatedAt(),
                 documents.stream()
@@ -154,7 +149,6 @@ public class AssetDocumentService {
                             upload.getAssets().getId(),
                             upload.getAssetDocumentType().getId(),
                             upload.getAssetDocumentType().getName(),
-                            upload.getCaption(),
                             upload.getUploadedAt(),
                             upload.getUpdatedAt(),
                             documents
