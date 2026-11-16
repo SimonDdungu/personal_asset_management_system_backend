@@ -48,7 +48,6 @@ public class RealEstateService {
         realEstate.setAssets(asset);
 
         realEstate.setAddress(request.address());
-        realEstate.setDescription(request.description());
 
         realEstate.setNumberBedrooms(request.numberBedrooms());
         realEstate.setNumberBathrooms(request.numberBathrooms());
@@ -87,21 +86,27 @@ public class RealEstateService {
             realEstate.setAddress(request.address());
         }
 
-        realEstate.setDescription(request.description());
-
-        if(request.numberBedrooms() != null && request.numberBedrooms() >= 0){
+        if(request.numberBedrooms() == null){
+            realEstate.setNumberBedrooms(null);
+        }else if (request.numberBedrooms() >= 0) {
             realEstate.setNumberBedrooms(request.numberBedrooms());
         }
 
-        if(request.numberBathrooms() != null && request.numberBathrooms() >= 0){
+        if(request.numberBathrooms() == null){
+            realEstate.setNumberBathrooms(null);
+        }else if (request.numberBathrooms() >= 0) {
             realEstate.setNumberBathrooms(request.numberBathrooms());
         }
 
-        if(request.numberUnits() != null && request.numberUnits() >= 0){
+        if(request.numberUnits() == null){
+            realEstate.setNumberUnits(null);
+        }else if (request.numberUnits() >= 0) {
             realEstate.setNumberUnits(request.numberUnits());
         }
 
-        if(request.propertySize() != null && request.propertySize().compareTo(BigDecimal.ZERO) >= 0){
+        if(request.propertySize() == null) {
+            realEstate.setPropertySize(null);
+        }else if (request.propertySize().compareTo(BigDecimal.ZERO) >= 0) {
             realEstate.setPropertySize(request.propertySize());
         }
 
@@ -109,18 +114,19 @@ public class RealEstateService {
             realEstate.setPropertySizeUnit(request.propertySizeUnit());
         }
 
-        if(request.constructionCost() != null && request.constructionCost().compareTo(BigDecimal.ZERO) >= 0){
+        if(request.constructionCost() == null){
+            realEstate.setConstructionCost(null);
+        } else if(request.constructionCost().compareTo(BigDecimal.ZERO) >= 0){
             realEstate.setConstructionCost(request.constructionCost());
         }
 
-        if(request.constructionCostCurrency() != null){
-            realEstate.setConstructionCurrency(request.constructionCostCurrency());
-        }
-
+        realEstate.setConstructionCurrency(request.constructionCostCurrency());
 
         realEstate.setConstructionCompletionDate(request.constructionCompletionDate());
 
-        if(request.rentalIncome() != null && request.rentalIncome().compareTo(BigDecimal.ZERO) >= 0){
+        if (request.rentalIncome() == null) {
+            realEstate.setRentalIncome(null);
+        } else if (request.rentalIncome().compareTo(BigDecimal.ZERO) >= 0) {
             realEstate.setRentalIncome(request.rentalIncome());
         }
 
@@ -182,8 +188,11 @@ public class RealEstateService {
                 r.getId(),
                 r.getAssets().getId(),
                 r.getAssets().getName(),
+                r.getAssets().getAcquisition().getName(),
+                r.getAssets().getAssetType().getName(),
+                r.getAssets().getAssetCategory().getName(),
                 r.getAddress(),
-                r.getDescription(),
+                r.getAssets().getDescription(),
                 r.getNumberBedrooms(),
                 r.getNumberBathrooms(),
                 r.getNumberUnits(),
