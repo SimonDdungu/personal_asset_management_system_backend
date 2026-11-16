@@ -17,6 +17,8 @@ public record ElectronicsResponse(
 
         String assetName,
 
+        String acquisition,
+
         String assetType,
 
         String assetCategory,
