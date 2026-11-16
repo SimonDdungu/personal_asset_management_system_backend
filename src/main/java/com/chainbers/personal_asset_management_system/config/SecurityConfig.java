@@ -57,6 +57,7 @@ public class SecurityConfig {
                                 "/auth/register",
                                 "/auth/login",
                                 "/auth/logout",
+                                "/assets/**",
                                 "/assets/electronics/**",
                                 "/assets/realestate/**"
                         ).permitAll().anyRequest().authenticated())
