@@ -125,7 +125,7 @@ public class AssetsService {
             assets.setCurrency(request.currency());
         }
 
-        if(request.currentValue() != null && request.currentValue().compareTo(BigDecimal.ZERO) >= 0 ) {
+        if(request.currentValue() != null  && request.currentValue().compareTo(BigDecimal.ZERO) >= 0 && (assets.getCurrentValue() == null || request.currentValue().compareTo(assets.getCurrentValue()) != 0) ) {
             assets.setCurrentValue(request.currentValue());
             assets.setCurrentValueUpdatedAt(Instant.now());
         }
