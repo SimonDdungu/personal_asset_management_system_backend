@@ -19,6 +19,12 @@ public record RealEstateResponse(
 
         String assetName,
 
+        String acquisition,
+
+        String assetType,
+
+        String assetCategory,
+
         String address,
 
         String description,
