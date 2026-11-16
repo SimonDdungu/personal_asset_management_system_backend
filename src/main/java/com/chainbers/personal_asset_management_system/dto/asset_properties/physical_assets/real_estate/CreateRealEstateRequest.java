@@ -25,9 +25,6 @@ public record CreateRealEstateRequest(
         @Size(max = 255, message = "Address of real estate exceeds limit.")
         String address,
 
-        @Size(max = 255, message = "Description exceeds limit.")
-        String description,
-
         @Min(value = 0, message = "Number of Bedrooms cannot be less than 0.")
         Integer numberBedrooms,
 
