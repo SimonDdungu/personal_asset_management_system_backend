@@ -75,7 +75,7 @@ public class SupabaseFileStorage {
 
     public void delete(String path) {
         restClient.delete()
-                .uri(objectUri("sign", path))
+                .uri(objectUri(null, path))
                 .header("apikey", serviceKey)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + serviceKey)
                 .retrieve()
