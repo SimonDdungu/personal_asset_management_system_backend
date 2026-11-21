@@ -1,6 +1,7 @@
 package com.chainbers.personal_asset_management_system.controller.auth;
 
 import com.chainbers.personal_asset_management_system.auth.JwtAuthenticationFilter;
+import com.chainbers.personal_asset_management_system.auth.JwtService;
 import com.chainbers.personal_asset_management_system.dto.user.CreateUserRequest;
 import com.chainbers.personal_asset_management_system.dto.user.LoginRequest;
 import com.chainbers.personal_asset_management_system.dto.user.UserResponse;
@@ -16,10 +17,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+    private final JwtService jwtService;
 
     @Value("${app.jwt.cookie-secure:false}")
     private boolean cookieSecure;
@@ -29,46 +31,39 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse register(@Valid @RequestBody CreateUserRequest request) {
+    public UserResponse register(@Valid @RequestBody CreateUserRequest request,  HttpServletResponse response) {
         User user = authService.register(request);
+        String token = jwtService.generateToken(user);
+        authService.setAuthCookie(response, token);
 
         return new UserResponse(
-                user.getId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getPhoneNumber(),
-                user.getGender()
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getPhoneNumber(),
+            user.getGender()
         );
     }
 
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
-        String token = authService.login(request);
+    public UserResponse login(@Valid @RequestBody LoginRequest request, HttpServletResponse response) {
+        User user = authService.login(request);
+        String token = jwtService.generateToken(user);
+        authService.setAuthCookie(response, token);
 
-        Cookie cookie = new Cookie(JwtAuthenticationFilter.COOKIE_NAME, token);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(cookieSecure);
-        cookie.setPath("/");
-        cookie.setMaxAge(expirationMs / 1000);
-        cookie.setAttribute("SameSite", "Lax");
-
-        response.addCookie(cookie);
-
-        return "Login successful";
+        return new UserResponse(
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getPhoneNumber(),
+            user.getGender()
+        );
     }
 
     @PostMapping("/logout")
     public String logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie(JwtAuthenticationFilter.COOKIE_NAME, "");
-        cookie.setHttpOnly(true);
-        cookie.setSecure(cookieSecure);
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        cookie.setAttribute("SameSite", "Lax");
-
-        response.addCookie(cookie);
+        authService.clearAuthCookie(response);
 
         return "Logout successful";
     }
@@ -76,7 +71,6 @@ public class AuthController {
     @GetMapping("/me")
     public UserResponse me(@AuthenticationPrincipal User user) {
         return new UserResponse(
-                user.getId(),
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
@@ -84,5 +78,4 @@ public class AuthController {
                 user.getGender()
         );
     }
-
 }
