@@ -1,12 +1,19 @@
 package com.chainbers.personal_asset_management_system.controller.asset_files.images;
 
+import com.chainbers.personal_asset_management_system.dto.asset_files.images.AssetImageResponse;
 import com.chainbers.personal_asset_management_system.dto.asset_files.images.AssetImageUploadResponse;
+import com.chainbers.personal_asset_management_system.dto.asset_files.images.CreateAssetImageRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_files.images.UpdateAssetImageRequest;
+import com.chainbers.personal_asset_management_system.entity.assets.Assets;
+import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
 import com.chainbers.personal_asset_management_system.service.asset_files.images.AssetImageService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -15,6 +22,12 @@ import java.util.UUID;
 public class AssetImagesController {
 
     private final AssetImageService assetImageService;
+    private final AssetsRepository assetsRepository;
+
+    @PostMapping(value = "/{uploadId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public List<AssetImageResponse> addImages(@PathVariable UUID uploadId, @RequestParam UUID userId, @ModelAttribute CreateAssetImageRequest request) {
+        return assetImageService.addImages(request, uploadId, userId);
+    }
 
     @PatchMapping("/{id}")
     public AssetImageUploadResponse updateImage(@PathVariable UUID id, @RequestBody UpdateAssetImageRequest request, @RequestParam UUID userId){

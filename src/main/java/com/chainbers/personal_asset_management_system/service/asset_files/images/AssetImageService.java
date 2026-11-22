@@ -81,6 +81,41 @@ public class AssetImageService {
     }
 
     @Transactional
+    public List<AssetImageResponse> addImages(CreateAssetImageRequest request, UUID uploadId, UUID userId) {
+        if (request.images() == null || request.images().isEmpty()) {
+            throw new IllegalArgumentException("No images available");
+        }
+
+        AssetImageUpload upload = assetImageUploadRepository.findByIdAndAssetsUserIdAndAssetsDeletedAtIsNull(uploadId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Image upload not found"));
+
+
+        List<AssetImage> images = new ArrayList<>();
+
+        for (MultipartFile file : request.images()) {
+            String imagePath = fileStorage.store("images", file);
+
+            AssetImage image = new AssetImage();
+            image.setAssetImageUpload(upload);
+            image.setImagePath(imagePath);
+            image.setPrimary(false);
+            image.setOriginalFileName(file.getOriginalFilename());
+
+            images.add(image);
+        }
+
+        return assetImageRepository.saveAll(images)
+                .stream()
+                .map(image -> new AssetImageResponse(
+                        image.getId(),
+                        fileStorage.signedUrl(image.getImagePath()),
+                        image.getOriginalFileName(),
+                        image.isPrimary()
+                ))
+                .toList();
+    }
+
+    @Transactional
     public AssetImageUploadResponse update(UUID uploadId, UpdateAssetImageRequest request, UUID userId){
         AssetImageUpload upload = assetImageUploadRepository.findByIdAndAssetsUserIdAndAssetsDeletedAtIsNull(uploadId, userId)
                                                         .orElseThrow(() -> new EntityNotFoundException("Image upload not found"));
