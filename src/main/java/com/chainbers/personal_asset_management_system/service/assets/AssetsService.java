@@ -4,19 +4,14 @@ import com.chainbers.personal_asset_management_system.dto.assets.AssetSearchFilt
 import com.chainbers.personal_asset_management_system.dto.assets.CreateAssetsRequest;
 import com.chainbers.personal_asset_management_system.dto.assets.AssetsResponse;
 import com.chainbers.personal_asset_management_system.dto.assets.UpdateAssetsRequest;
+import com.chainbers.personal_asset_management_system.dto.metrics.*;
 import com.chainbers.personal_asset_management_system.entity.asset_files.documents.AssetDocumentUpload;
 import com.chainbers.personal_asset_management_system.entity.asset_files.images.AssetImageUpload;
-import com.chainbers.personal_asset_management_system.entity.assets.Acquisition;
-import com.chainbers.personal_asset_management_system.entity.assets.AssetCategory;
-import com.chainbers.personal_asset_management_system.entity.assets.AssetType;
-import com.chainbers.personal_asset_management_system.entity.assets.Assets;
+import com.chainbers.personal_asset_management_system.entity.assets.*;
 import com.chainbers.personal_asset_management_system.entity.user.User;
 import com.chainbers.personal_asset_management_system.repository.asset_files.documents.AssetDocumentUploadRepository;
 import com.chainbers.personal_asset_management_system.repository.asset_files.images.AssetImageUploadRepository;
-import com.chainbers.personal_asset_management_system.repository.assets.AcquisitionRepository;
-import com.chainbers.personal_asset_management_system.repository.assets.AssetCategoryRepository;
-import com.chainbers.personal_asset_management_system.repository.assets.AssetTypeRepository;
-import com.chainbers.personal_asset_management_system.repository.assets.AssetsRepository;
+import com.chainbers.personal_asset_management_system.repository.assets.*;
 import com.chainbers.personal_asset_management_system.repository.user.UserRepository;
 import com.chainbers.personal_asset_management_system.service.asset_files.documents.AssetDocumentService;
 import com.chainbers.personal_asset_management_system.service.asset_files.images.AssetImageService;
@@ -31,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -46,6 +43,7 @@ public class AssetsService {
     private final AssetDocumentUploadRepository assetDocumentUploadRepository;
     private final AssetImageService assetImageService;
     private final AssetDocumentService assetDocumentService;
+    private final AssetValutionHistoryRepository assetValutionHistoryRepository;
 
     private AssetCategory findCategory(String category) {
         return assetCategoryRepository.findByName(category)
@@ -100,12 +98,21 @@ public class AssetsService {
         assets.setCurrentValue(request.currentValue());
         assets.setCurrentValueUpdatedAt(Instant.now());
 
-        return assetsRepository.save(assets);
+        Assets savedAsset = assetsRepository.save(assets);
+
+        AssetValutionHistory history = new AssetValutionHistory();
+        history.setAsset(savedAsset);
+        history.setValue(savedAsset.getCurrentValue());
+
+        assetValutionHistoryRepository.save(history);
+
+        return savedAsset;
     }
 
     @Transactional
     public AssetsResponse update(UUID id, UpdateAssetsRequest request, UUID userId){
         Assets assets = findAsset(id, userId);
+
 
         assets.setDescription(request.description());
 
@@ -128,6 +135,12 @@ public class AssetsService {
         if(request.currentValue() != null  && request.currentValue().compareTo(BigDecimal.ZERO) >= 0 && (assets.getCurrentValue() == null || request.currentValue().compareTo(assets.getCurrentValue()) != 0) ) {
             assets.setCurrentValue(request.currentValue());
             assets.setCurrentValueUpdatedAt(Instant.now());
+
+            AssetValutionHistory history = new AssetValutionHistory();
+            history.setAsset(assets);
+            history.setValue(assets.getCurrentValue());
+
+            assetValutionHistoryRepository.save(history);
         }
 
         assets.setUpdatedAt(Instant.now());
@@ -184,6 +197,36 @@ public class AssetsService {
     }
 
     @Transactional(readOnly = true)
+    public long getTotalAssets(UUID userId) {
+        return assetsRepository.totalAssetsCount(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public long getPhysicalAssetsCount(UUID userId) {
+        return assetsRepository.totalPhysicalAssetsCount(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public long getFinancialAssetsCount(UUID userId) {
+        return assetsRepository.totalFinancialAssetsCount(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CurrencyAverage> getAverageAssetValue(UUID userId) {
+        return assetsRepository.averageAssetValueByCurrency(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CurrencyAverage> getAveragePhysicalAssets(UUID userId) {
+        return assetsRepository.averagePhysicalAssetsByCurrency(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CurrencyAverage> getAverageFinancialAssets(UUID userId) {
+        return assetsRepository.averageFinancialAssetsByCurrency(userId);
+    }
+
+    @Transactional(readOnly = true)
     public Page<AssetsResponse> getDeletedAssets(UUID userId, Pageable pageable) {
         Specification<Assets> specification = Specification.allOf(
                 AssetSpecification.belongsTo(userId),
@@ -192,6 +235,139 @@ public class AssetsService {
 
         return assetsRepository.findAll(specification, pageable).map(this::toResponse);
     }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<LargestAsset>> getLargestAssets(UUID userId) {
+        Map<String, List<LargestAsset>> result = new LinkedHashMap<>();
+
+        for (CurrencyTotal ct : assetsRepository.sumByCurrency(userId)) {
+            List<LargestAsset> top = assetsRepository.findLargestAssets(
+                            userId, ct.currency())
+                    .stream()
+                    .map(this::toLargestAsset)
+                    .toList();
+
+            result.put(ct.currency().getCurrencyCode(), top);
+        }
+
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<LargestAsset>> getLargestPhysicalAssets(UUID userId) {
+        Map<String, List<LargestAsset>> result = new LinkedHashMap<>();
+
+        for (CurrencyTotal ct : assetsRepository.sumPhysicalAssetsByCurrency(userId)) {
+            List<LargestAsset> top = assetsRepository.findLargestPhysicalAssets(
+                            userId, ct.currency())
+                    .stream()
+                    .map(this::toLargestAsset)
+                    .toList();
+
+            result.put(ct.currency().getCurrencyCode(), top);
+        }
+
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<LargestAsset>> getLargestFinancialAssets(UUID userId) {
+        Map<String, List<LargestAsset>> result = new LinkedHashMap<>();
+
+        for (CurrencyTotal ct : assetsRepository.sumFinancialAssetsByCurrency(userId)) {
+            List<LargestAsset> top = assetsRepository.findLargestFinancialAssets(
+                            userId, ct.currency())
+                    .stream()
+                    .map(this::toLargestAsset)
+                    .toList();
+
+            result.put(ct.currency().getCurrencyCode(), top);
+        }
+
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<CategoryTotal>> getTopCategories(UUID userId) {
+        Map<String, List<CategoryTotal>> result = new LinkedHashMap<>();
+
+        for (CurrencyTotal ct : assetsRepository.sumByCurrency(userId)) {
+            List<CategoryTotal> top = assetsRepository.topCategories(userId, ct.currency());
+            result.put(ct.currency().getCurrencyCode(), top);
+        }
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<CategoryTotal>> getTopPhysicalCategories(UUID userId) {
+        Map<String, List<CategoryTotal>> result = new LinkedHashMap<>();
+
+        for (CurrencyTotal ct : assetsRepository.sumPhysicalAssetsByCurrency(userId)) {
+            List<CategoryTotal> top = assetsRepository.topPhysicalCategories(
+                    userId, ct.currency());
+
+            result.put(ct.currency().getCurrencyCode(), top);
+        }
+
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<CategoryTotal>> getTopFinancialCategories(UUID userId) {
+        Map<String, List<CategoryTotal>> result = new LinkedHashMap<>();
+
+        for (CurrencyTotal ct : assetsRepository.sumFinancialAssetsByCurrency(userId)) {
+            List<CategoryTotal> top = assetsRepository.topFinancialCategories(
+                    userId, ct.currency());
+
+            result.put(ct.currency().getCurrencyCode(), top);
+        }
+
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<CategoryCount>> getTopCategoriesByCount(UUID userId) {
+        Map<String, List<CategoryCount>> result = new LinkedHashMap<>();
+
+        for (CurrencyTotal ct : assetsRepository.sumByCurrency(userId)) {
+            List<CategoryCount> top = assetsRepository.topCategoriesByCount(
+                    userId, ct.currency());
+
+            result.put(ct.currency().getCurrencyCode(), top);
+        }
+
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<CategoryCount>> getTopPhysicalCategoriesByCount(UUID userId) {
+        Map<String, List<CategoryCount>> result = new LinkedHashMap<>();
+
+        for (CurrencyTotal ct : assetsRepository.sumPhysicalAssetsByCurrency(userId)) {
+            List<CategoryCount> top = assetsRepository.topPhysicalCategoriesByCount(
+                    userId, ct.currency());
+
+            result.put(ct.currency().getCurrencyCode(), top);
+        }
+
+        return result;
+    }
+
+    @Transactional(readOnly = true)
+    public Map<String, List<CategoryCount>> getTopFinancialCategoriesByCount(UUID userId) {
+        Map<String, List<CategoryCount>> result = new LinkedHashMap<>();
+
+        for (CurrencyTotal ct : assetsRepository.sumFinancialAssetsByCurrency(userId)) {
+            List<CategoryCount> top = assetsRepository.topFinancialCategoriesByCount(
+                    userId, ct.currency());
+
+            result.put(ct.currency().getCurrencyCode(), top);
+        }
+
+        return result;
+    }
+
 
 
     private AssetsResponse toResponse(Assets a) {
@@ -207,5 +383,15 @@ public class AssetsService {
                 a.getCurrentValueUpdatedAt(),
                 a.getCreatedAt(),
                 a.getUpdatedAt());
+    }
+
+    private LargestAsset toLargestAsset(Assets asset) {
+        return new LargestAsset(
+                asset.getId(),
+                asset.getName(),
+                asset.getAssetCategory().getName(),
+                asset.getCurrency(),
+                asset.getCurrentValue()
+        );
     }
 }

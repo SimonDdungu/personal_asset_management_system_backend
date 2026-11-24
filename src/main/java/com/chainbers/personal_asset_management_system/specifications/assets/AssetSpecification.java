@@ -31,13 +31,13 @@ public class AssetSpecification {
     public static Specification<Assets> currentValueFrom(BigDecimal minValue) {
         return (root, query, cb) -> minValue == null
                 ? null
-                : cb.greaterThanOrEqualTo(root.get("current_value"), minValue);
+                : cb.greaterThanOrEqualTo(root.get("currentValue"), minValue);
     }
 
     public static Specification<Assets> currentValueTo(BigDecimal maxValue) {
         return (root, query, cb) -> maxValue == null
                 ? null
-                : cb.lessThanOrEqualTo(root.get("current_value"), maxValue);
+                : cb.lessThanOrEqualTo(root.get("currentValue"), maxValue);
     }
 
     public static Specification<Assets> currencyIs(Currency currency) {
