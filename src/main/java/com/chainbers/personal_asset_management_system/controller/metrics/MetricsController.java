@@ -1,7 +1,6 @@
 package com.chainbers.personal_asset_management_system.controller.metrics;
 
-import com.chainbers.personal_asset_management_system.dto.metrics.CategoryTotal;
-import com.chainbers.personal_asset_management_system.dto.metrics.CurrencyAverage;
+
 import com.chainbers.personal_asset_management_system.dto.metrics.CurrencyTotal;
 import com.chainbers.personal_asset_management_system.dto.metrics.PortfolioMonthlyTrends;
 import com.chainbers.personal_asset_management_system.entity.user.User;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/metrics")
