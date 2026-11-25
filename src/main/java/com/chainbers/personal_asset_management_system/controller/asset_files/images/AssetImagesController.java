@@ -24,7 +24,6 @@ import java.util.UUID;
 public class AssetImagesController {
 
     private final AssetImageService assetImageService;
-    private final AssetsRepository assetsRepository;
 
     @PostMapping(value = "/{uploadId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public List<AssetImageResponse> addImages(@PathVariable UUID uploadId, @AuthenticationPrincipal User user, @ModelAttribute CreateAssetImageRequest request) {

@@ -5,6 +5,6 @@ import java.util.Currency;
 
 public record CurrencyAverage(
         Currency currency,
-        BigDecimal average
+        Double average
 ) {
 }

@@ -293,6 +293,15 @@ public class AssetsService {
 
         for (CurrencyTotal ct : assetsRepository.sumByCurrency(userId)) {
             List<CategoryTotal> top = assetsRepository.topCategories(userId, ct.currency());
+            BigDecimal topTotal = top.stream()
+                                        .map(CategoryTotal::total)
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            BigDecimal others = ct.total().subtract(topTotal);
+
+            if (others.compareTo(BigDecimal.ZERO) > 0) {
+                top.add(new CategoryTotal("Others", others));
+            }
             result.put(ct.currency().getCurrencyCode(), top);
         }
         return result;
@@ -303,8 +312,17 @@ public class AssetsService {
         Map<String, List<CategoryTotal>> result = new LinkedHashMap<>();
 
         for (CurrencyTotal ct : assetsRepository.sumPhysicalAssetsByCurrency(userId)) {
-            List<CategoryTotal> top = assetsRepository.topPhysicalCategories(
-                    userId, ct.currency());
+            List<CategoryTotal> top = assetsRepository.topPhysicalCategories(userId, ct.currency());
+
+            BigDecimal topTotal = top.stream()
+                                        .map(CategoryTotal::total)
+                                        .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            BigDecimal others = ct.total().subtract(topTotal);
+
+            if (others.compareTo(BigDecimal.ZERO) > 0) {
+                top.add(new CategoryTotal("Others", others));
+            }
 
             result.put(ct.currency().getCurrencyCode(), top);
         }
@@ -317,8 +335,17 @@ public class AssetsService {
         Map<String, List<CategoryTotal>> result = new LinkedHashMap<>();
 
         for (CurrencyTotal ct : assetsRepository.sumFinancialAssetsByCurrency(userId)) {
-            List<CategoryTotal> top = assetsRepository.topFinancialCategories(
-                    userId, ct.currency());
+            List<CategoryTotal> top = assetsRepository.topFinancialCategories(userId, ct.currency());
+
+            BigDecimal topTotal = top.stream()
+                    .map(CategoryTotal::total)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            BigDecimal others = ct.total().subtract(topTotal);
+
+            if (others.compareTo(BigDecimal.ZERO) > 0) {
+                top.add(new CategoryTotal("Others", others));
+            }
 
             result.put(ct.currency().getCurrencyCode(), top);
         }

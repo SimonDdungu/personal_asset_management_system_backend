@@ -7,6 +7,7 @@ import com.chainbers.personal_asset_management_system.dto.asset_files.documents.
 import com.chainbers.personal_asset_management_system.dto.asset_files.documents.UpdateAssetDocumentRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_files.images.AssetImageResponse;
 import com.chainbers.personal_asset_management_system.dto.asset_files.images.AssetImageUploadResponse;
+import com.chainbers.personal_asset_management_system.dto.asset_files.images.CreateAssetImageRequest;
 import com.chainbers.personal_asset_management_system.dto.asset_files.images.UpdateAssetImageRequest;
 import com.chainbers.personal_asset_management_system.entity.asset_files.documents.AssetDocument;
 import com.chainbers.personal_asset_management_system.entity.asset_files.documents.AssetDocumentType;
@@ -89,6 +90,38 @@ public class AssetDocumentService {
         );
     }
 
+    @Transactional
+    public List<AssetDocumentResponse> addDocs(CreateAssetDocumentRequest request, UUID uploadId, UUID userId) {
+        if (request.documents() == null || request.documents().isEmpty()) {
+            throw new IllegalArgumentException("No documents available");
+        }
+
+        AssetDocumentUpload upload = assetDocumentUploadRepository.findByIdAndAssetsUserIdAndAssetsDeletedAtIsNull(uploadId, userId)
+                .orElseThrow(() -> new EntityNotFoundException("Document upload not found"));
+
+
+        List<AssetDocument> documents = new ArrayList<>();
+
+        for (MultipartFile file : request.documents()) {
+            String docPath = fileStorage.store("documents", file);
+
+            AssetDocument document = new AssetDocument();
+            document.setAssetDocumentUpload(upload);
+            document.setDocumentPath(docPath);
+            document.setOriginalFileName(file.getOriginalFilename());
+
+            documents.add(document);
+        }
+
+        return assetDocumentRepository.saveAll(documents)
+                .stream()
+                .map(doc -> new AssetDocumentResponse(
+                        doc.getId(),
+                        fileStorage.signedUrl(doc.getDocumentPath()),
+                        doc.getOriginalFileName()
+                ))
+                .toList();
+    }
 
     @Transactional
     public AssetDocumentUploadResponse update(UUID uploadId, UpdateAssetDocumentRequest request, UUID userId){

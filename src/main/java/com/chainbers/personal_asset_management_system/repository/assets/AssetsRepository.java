@@ -83,7 +83,7 @@ public interface AssetsRepository extends JpaRepository<Assets, UUID>, JpaSpecif
     where a.user.id = :userId and a.currency = :currency and a.deletedAt is null
     group by c.id, c.name
     order by sum(a.currentValue) desc
-    limit 5
+    limit 4
     """)
     List<CategoryTotal> topCategories(@Param("userId") UUID userId, @Param("currency") Currency currency);
 
@@ -96,7 +96,7 @@ public interface AssetsRepository extends JpaRepository<Assets, UUID>, JpaSpecif
       and a.deletedAt is null
     group by c.id, c.name
     order by sum(a.currentValue) desc
-    limit 5
+    limit 4
     """)
     List<CategoryTotal> topPhysicalCategories(@Param("userId") UUID userId, @Param("currency") Currency currency);
 
@@ -109,7 +109,7 @@ public interface AssetsRepository extends JpaRepository<Assets, UUID>, JpaSpecif
       and a.deletedAt is null
     group by c.id, c.name
     order by sum(a.currentValue) desc
-    limit 5
+    limit 4
     """)
     List<CategoryTotal> topFinancialCategories(@Param("userId") UUID userId,  @Param("currency") Currency currency);
 
