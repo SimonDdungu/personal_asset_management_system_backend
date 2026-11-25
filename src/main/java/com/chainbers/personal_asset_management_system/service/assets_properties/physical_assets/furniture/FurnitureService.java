@@ -85,7 +85,7 @@ public class FurnitureService {
         return new FurnitureResponse(
                 furniture.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
                 asset.getAssetType().getName(), asset.getAssetCategory().getName(),
-                furniture.getBrand(), furniture.getMaterial(), furniture.getDescription(),
+                furniture.getBrand(), furniture.getMaterial(), furniture.getAssets().getDescription(),
                 asset.getCurrency(), asset.getCurrentValue(), asset.getCurrentValueUpdatedAt(),
                 assetImageService.getImagesByAssetId(asset.getId()),
                 assetDocumentService.getDocumentByAssetId(asset.getId()),

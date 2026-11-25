@@ -95,7 +95,7 @@ public class LandService {
         return new LandResponse(
                 land.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
                 asset.getAssetType().getName(), asset.getAssetCategory().getName(),
-                land.getAddress(), land.getDescription(), land.getPlotNumber(),
+                land.getAddress(), land.getAssets().getDescription(), land.getPlotNumber(),
                 land.getLandSize(), land.getLandSizeUnit(), asset.getCurrency(),
                 asset.getCurrentValue(), asset.getCurrentValueUpdatedAt(),
                 assetImageService.getImagesByAssetId(asset.getId()),
