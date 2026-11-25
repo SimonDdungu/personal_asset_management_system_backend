@@ -1,0 +1,1 @@
+ALTER TABLE real_estate DROP COLUMN description;

@@ -31,9 +31,6 @@ public class RealEstate {
     @Column(nullable = false)
     private String address;
 
-    @Column
-    private String description;
-
     @Column(name = "rental_income", precision = 19, scale = 2)
     private BigDecimal rentalIncome;
 
