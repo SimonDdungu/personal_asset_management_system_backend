@@ -75,7 +75,11 @@ public class ElectronicService {
 
         electronics.setColor(request.color());
 
-        electronics.setYear(request.year());
+        if (request.year() == null) {
+            electronics.setYear(null);
+        } else if (request.year() >= 0) {
+            electronics.setYear(request.year());
+        }
 
         electronics.setSerialNumber(request.serialNumber());
 
