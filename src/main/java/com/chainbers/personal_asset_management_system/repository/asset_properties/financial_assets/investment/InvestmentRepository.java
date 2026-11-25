@@ -4,10 +4,9 @@ import com.chainbers.personal_asset_management_system.entity.asset_properties.fi
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface InvestmentRepository extends JpaRepository<Investment, UUID>, JpaSpecificationExecutor<Investment> {
-    List<Investment> findByAssetsUserId(UUID userId);
-
+    Optional<Investment> findByIdAndAssetsUserId(UUID id, UUID userId);
 }

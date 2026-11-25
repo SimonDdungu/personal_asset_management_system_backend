@@ -4,9 +4,9 @@ import com.chainbers.personal_asset_management_system.entity.asset_properties.ph
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface FurnitureRepository extends JpaRepository<Furniture, UUID>, JpaSpecificationExecutor<Furniture> {
-    List<Furniture> findByAssetsUserId(UUID userId);
+    Optional<Furniture> findByIdAndAssetsUserId(UUID id, UUID userId);
 }
