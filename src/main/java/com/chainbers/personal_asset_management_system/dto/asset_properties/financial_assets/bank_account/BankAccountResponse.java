@@ -1,7 +1,10 @@
 package com.chainbers.personal_asset_management_system.dto.asset_properties.financial_assets.bank_account;
 
+import com.chainbers.personal_asset_management_system.dto.asset_files.documents.AssetDocumentUploadResponse;
+
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 public record BankAccountResponse(
@@ -24,6 +27,8 @@ public record BankAccountResponse(
         BigDecimal previousBalance,
 
         Instant currentBalanceUpdatedAt,
+
+        List<AssetDocumentUploadResponse> documents,
 
         Instant createdAt,
 

@@ -1,5 +1,7 @@
 package com.chainbers.personal_asset_management_system.dto.asset_properties.financial_assets.bank_account;
 
+import com.chainbers.personal_asset_management_system.dto.asset_files.documents.CreateAssetDocumentRequest;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
@@ -8,6 +10,9 @@ import java.util.UUID;
 public record CreateBankAccountRequest(
         @NotNull(message = "Asset is required.")
         UUID assetId,
+
+        @Valid
+        CreateAssetDocumentRequest documents,
 
         @NotBlank(message = "Bank is required.")
         @Size(max = 255, message = "Bank name exceeds limit.")
