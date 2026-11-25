@@ -19,6 +19,8 @@ public record ElectronicSearchResponse(
 
         String assetCategory,
 
+        String brand,
+
         AssetImageResponse image,
 
         Currency currency,

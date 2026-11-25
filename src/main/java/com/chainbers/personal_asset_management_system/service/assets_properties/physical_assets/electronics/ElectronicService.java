@@ -141,6 +141,7 @@ public class ElectronicService {
                 e.getAssets().getName(),
                 e.getAssets().getAssetType().getName(),
                 e.getAssets().getAssetCategory().getName(),
+                e.getBrand(),
                 assetImageService.getPrimaryImageByAssetId(assets.getId()),
                 e.getAssets().getCurrency(),
                 e.getAssets().getCurrentValue()
