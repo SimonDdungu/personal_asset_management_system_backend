@@ -16,6 +16,7 @@ public record VehicleResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         String make,
         String model,
         Integer year,

@@ -68,7 +68,7 @@ public class PhysicalCashService {
         Assets asset = physicalCash.getAssets();
         return new PhysicalCashResponse(
                 physicalCash.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 asset.getCurrency(), asset.getCurrentValue(), asset.getCurrentValueUpdatedAt(),
                 assetDocumentService.getDocumentByAssetId(asset.getId()),
                 physicalCash.getCreatedAt(), physicalCash.getUpdatedAt()

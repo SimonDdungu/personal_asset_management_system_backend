@@ -15,6 +15,7 @@ public record InvestmentResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         Integer quantity,
         String institution,
         BigDecimal interestRate,

@@ -16,6 +16,7 @@ public record LoansResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         String lender,
         BigDecimal originalAmount,
         BigDecimal interestRate,

@@ -91,7 +91,7 @@ public class SavingsService {
         Assets asset = savings.getAssets();
         return new SavingsResponse(
                 savings.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 savings.getInstitution(), savings.getAccountNumber(), savings.getInterestRate(),
                 savings.getMaturityDate(), asset.getCurrency(), asset.getCurrentValue(),
                 asset.getCurrentValueUpdatedAt(), assetDocumentService.getDocumentByAssetId(asset.getId()),

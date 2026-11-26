@@ -75,7 +75,7 @@ public class RetirementFundService {
         Assets asset = retirementFund.getAssets();
         return new RetirementFundResponse(
                 retirementFund.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 retirementFund.getProvider(), asset.getCurrency(), asset.getCurrentValue(),
                 asset.getCurrentValueUpdatedAt(), assetDocumentService.getDocumentByAssetId(asset.getId()),
                 retirementFund.getCreatedAt(), retirementFund.getUpdatedAt()

@@ -15,6 +15,7 @@ public record StocksResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         String tickerSymbol,
         Integer numberShares,
         String brokerage,

@@ -15,6 +15,7 @@ public record RetirementFundResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         String provider,
         Currency currency,
         BigDecimal currentValue,

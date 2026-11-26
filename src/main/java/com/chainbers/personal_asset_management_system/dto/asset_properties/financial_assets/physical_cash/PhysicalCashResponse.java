@@ -15,6 +15,7 @@ public record PhysicalCashResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         Currency currency,
         BigDecimal currentValue,
         Instant currentValueUpdatedAt,

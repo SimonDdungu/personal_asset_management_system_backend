@@ -93,7 +93,7 @@ public class CollectiblesValuablesService {
         Assets asset = collectible.getAssets();
         return new CollectiblesValuablesResponse(
                 collectible.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 collectible.getCreator(), collectible.getSerialNumber(), collectible.getMaterial(),
                 collectible.getYear(), asset.getCurrency(), asset.getCurrentValue(),
                 asset.getCurrentValueUpdatedAt(), assetImageService.getImagesByAssetId(asset.getId()),

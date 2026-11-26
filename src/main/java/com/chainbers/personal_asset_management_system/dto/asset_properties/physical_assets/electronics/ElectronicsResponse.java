@@ -23,6 +23,8 @@ public record ElectronicsResponse(
 
         String assetCategory,
 
+        String description,
+
         String brand,
 
         String model,

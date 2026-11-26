@@ -16,6 +16,7 @@ public record SavingsResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         String institution,
         String accountNumber,
         BigDecimal interestRate,

@@ -88,7 +88,7 @@ public class InvestmentService {
         Assets asset = investment.getAssets();
         return new InvestmentResponse(
                 investment.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 investment.getQuantity(), investment.getInstitution(), investment.getInterestRate(),
                 investment.getReferenceNumber(), asset.getCurrency(), asset.getCurrentValue(),
                 asset.getCurrentValueUpdatedAt(), assetDocumentService.getDocumentByAssetId(asset.getId()),

@@ -96,7 +96,7 @@ public class LoansService {
         Assets asset = loan.getAssets();
         return new LoansResponse(
                 loan.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 loan.getLender(), loan.getOriginalAmount(), loan.getInterestRate(),
                 loan.getStartDate(), loan.getMaturityDate(), asset.getCurrency(),
                 asset.getCurrentValue(), asset.getCurrentValueUpdatedAt(),

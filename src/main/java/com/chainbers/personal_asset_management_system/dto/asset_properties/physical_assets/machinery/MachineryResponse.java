@@ -16,6 +16,7 @@ public record MachineryResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         String brand,
         String model,
         String material,

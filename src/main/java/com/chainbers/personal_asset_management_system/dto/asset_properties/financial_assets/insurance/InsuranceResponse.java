@@ -17,6 +17,7 @@ public record InsuranceResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         String provider,
         BigDecimal premiumAmount,
         PremiumFrequency premiumFrequency,

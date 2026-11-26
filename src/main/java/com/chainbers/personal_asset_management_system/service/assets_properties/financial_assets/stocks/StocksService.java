@@ -85,7 +85,7 @@ public class StocksService {
         Assets asset = stocks.getAssets();
         return new StocksResponse(
                 stocks.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 stocks.getTickerSymbol(), stocks.getNumberShares(), stocks.getBrokerage(),
                 asset.getCurrency(), asset.getCurrentValue(), asset.getCurrentValueUpdatedAt(),
                 assetDocumentService.getDocumentByAssetId(asset.getId()),

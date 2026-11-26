@@ -92,7 +92,7 @@ public class MachineryService {
         Assets asset = machinery.getAssets();
         return new MachineryResponse(
                 machinery.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 machinery.getBrand(), machinery.getModel(), machinery.getMaterial(), machinery.getYear(),
                 asset.getCurrency(), asset.getCurrentValue(), asset.getCurrentValueUpdatedAt(),
                 assetImageService.getImagesByAssetId(asset.getId()),

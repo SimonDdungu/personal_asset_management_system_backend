@@ -128,7 +128,7 @@ public class BankAccountService {
     private BankAccountResponse toResponse(BankAccount bankAccount) {
         Assets asset = bankAccount.getAssets();
         return new BankAccountResponse(
-                bankAccount.getId(), asset.getId(), asset.getName(),
+                bankAccount.getId(), asset.getId(), asset.getName(), asset.getDescription(),
                 bankAccount.getBank(), bankAccount.getBankAccountNumber(), bankAccount.getInterestRate(),
                 asset.getCurrency().getCurrencyCode(), asset.getCurrentValue(), bankAccount.getPreviousBalance(),
                 asset.getCurrentValueUpdatedAt(), assetDocumentService.getDocumentByAssetId(asset.getId()),

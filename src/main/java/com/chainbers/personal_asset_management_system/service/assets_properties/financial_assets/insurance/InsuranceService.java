@@ -92,7 +92,7 @@ public class InsuranceService {
         Assets asset = insurance.getAssets();
         return new InsuranceResponse(
                 insurance.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 insurance.getProvider(), insurance.getPremiumAmount(), insurance.getPremiumFrequency(),
                 insurance.getStartDate(), insurance.getEndDate(), asset.getCurrency(),
                 asset.getCurrentValue(), asset.getCurrentValueUpdatedAt(),

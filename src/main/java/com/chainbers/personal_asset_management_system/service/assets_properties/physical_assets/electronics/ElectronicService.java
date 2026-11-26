@@ -117,6 +117,7 @@ public class ElectronicService {
                 e.getAssets().getAcquisition().getName(),
                 e.getAssets().getAssetType().getName(),
                 e.getAssets().getAssetCategory().getName(),
+                e.getAssets().getDescription(),
                 e.getBrand(),
                 e.getModel(),
                 e.getColor(),

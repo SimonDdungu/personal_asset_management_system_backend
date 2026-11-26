@@ -14,6 +14,8 @@ public record BankAccountResponse(
 
         String assetName,
 
+        String description,
+
         String bank,
 
         String bankAccountNumber,

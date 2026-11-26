@@ -102,7 +102,7 @@ public class VehicleService {
         Assets asset = vehicle.getAssets();
         return new VehicleResponse(
                 vehicle.getId(), asset.getId(), asset.getName(), asset.getAcquisition().getName(),
-                asset.getAssetType().getName(), asset.getAssetCategory().getName(),
+                asset.getAssetType().getName(), asset.getAssetCategory().getName(), asset.getDescription(),
                 vehicle.getMake(), vehicle.getModel(), vehicle.getYear(), vehicle.getColor(),
                 vehicle.getMileage(), vehicle.getRegistrationNumber(), vehicle.getVin(),
                 asset.getCurrency(), asset.getCurrentValue(), asset.getCurrentValueUpdatedAt(),

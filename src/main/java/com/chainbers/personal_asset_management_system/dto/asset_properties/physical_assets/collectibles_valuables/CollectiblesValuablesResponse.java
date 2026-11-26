@@ -16,6 +16,7 @@ public record CollectiblesValuablesResponse(
         String acquisition,
         String assetType,
         String assetCategory,
+        String description,
         String creator,
         String serialNumber,
         String material,
